@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # [AdminLTE - Bootstrap 4 Admin Dashboard](https://adminlte.io)
 
 [![npm version](https://img.shields.io/npm/v/admin-lte/latest.svg)](https://www.npmjs.com/package/admin-lte)
@@ -123,3 +124,6 @@ AdminLTE.io reserves the right to change the license of future releases.
 - [Pickaface](https://pickaface.net/)
 - [Unsplash](https://unsplash.com/)
 - [Uifaces](http://uifaces.com/)
+=======
+# ProyectoGrado
+>>>>>>> ff9ab45e6161c3d78760516023cc6d40f1c40db0
