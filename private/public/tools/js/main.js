@@ -104,6 +104,7 @@ async function iniciarEventos() {
   } else if (section == "principal") {
     consultarContenido();
     imagenPerfil();
+    RegistrarUsuario();
   } else {
     sessionStart();
   }
@@ -276,4 +277,118 @@ function imagenPerfil() {
     );
     $(this).hide();
   });
+}
+
+function RegistrarUsuario() {
+  $("body").on("click", "#ingresar_usuario", function () {
+    var id_contenedor = "#contenedor-formulario";
+    var elemento = $(this);
+    var contenedor = $(id_contenedor);
+    var variables = obtener_variables(id_contenedor);
+    var imagen_base64 = document.getElementById("img").src;
+
+    if (
+      check_empty_field("nombre") &&
+      check_empty_field("apellido") &&
+      check_empty_field("usuario") &&
+      check_empty_field("password") &&
+      check_empty_field("perfil") &&
+      check_empty_field("estado")
+    ) {
+      ajax({
+        method: "POST",
+        url: internal_url_private,
+        data:
+          "action=ingresar_usuario" + variables[0] + "&imagen=" + imagen_base64,
+        dataType: "json",
+        beforeSend: function () {
+          show_spinner();
+          elemento.prop("disabled", true);
+        },
+        success: function (data) {
+          var code = data.code;
+          var message = data.message;
+          var campo = data.campo;
+
+          if (code === "200") {
+            hide_spinner();
+            alertify.set("notifier", "position", "top-right");
+            alertify.success(message, 10);
+          } else {
+            hide_spinner();
+            alertify.set("notifier", "position", "top-right");
+            alertify.error(message, 10);
+            if (campo.length) {
+              $("#" + campo).addClass("error-input");
+            }
+          }
+        },
+      });
+    } else {
+      alertify.set("notifier", "position", "top-right");
+      alertify.error("Por favor revisé los campos ingresados", 10);
+    }
+  });
+}
+
+function obtener_variables(objeto) {
+  var params = "";
+  var archivo = "";
+  if ($(objeto)) {
+    $(objeto + " :input").each(function () {
+      var name_field = $(this).attr("name");
+      var type_field = $(this).attr("type");
+      var tagName = this.tagName;
+      if (type_field == "radio") {
+        if ($(this).is(":checked"))
+          params +=
+            "&" +
+            encodeURIComponent(name_field) +
+            "=" +
+            encodeURIComponent($(this).val());
+      } else if (type_field == "checkbox") {
+        var value = "";
+        if ($(this).is(":checked")) value = $(this).val();
+        params +=
+          "&" +
+          encodeURIComponent(name_field) +
+          "=" +
+          encodeURIComponent(value);
+      } else if (type_field == "file") {
+        let archivos = document.getElementById("upload");
+        archivo = archivos.files[0];
+        let formdata = new FormData();
+      } else if (type_field == "file" && objeto + ": div") {
+        let archivos = $(this).attr("id");
+        console.log(archivos);
+        archivo = archivos.files[0];
+        let formdata = new FormData();
+      } else if (
+        tagName == "SELECT" &&
+        $(this).attr("multiple") == "multiple"
+      ) {
+        var i = 0;
+        var id_select = $(this).attr("id");
+        var selectedOptions = $("#" + id_select).val();
+        $("#" + id_select + " option:selected").each(function () {
+          value = $(this).attr("value");
+          params +=
+            "&" +
+            encodeURIComponent(name_field + "[" + i + "]") +
+            "=" +
+            encodeURIComponent(value);
+          i++;
+        });
+      } else {
+        params +=
+          "&" +
+          encodeURIComponent(name_field) +
+          "=" +
+          encodeURIComponent($(this).val());
+      }
+    });
+  } else if (typeof objeto == "string") {
+    params = objeto;
+  }
+  return [params, archivo];
 }

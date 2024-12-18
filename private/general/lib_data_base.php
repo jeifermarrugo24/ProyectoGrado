@@ -57,12 +57,14 @@ function consultar_geolocation($transaccion)
     $recurso = @mysqli_connect($host_usuario_db_web, $usuario_db, $clave_usuario_db_web, $bd_geolocation, $puerto_usuario_db_web);
 
     if ($recurso == FALSE) {
-        return FALSE;
+        return "Error al conectar a la base de datos: " . mysqli_connect_error();
     }
 
     $resultado = @mysqli_query($recurso, $transaccion);
 
     if ($resultado == FALSE) {
+        $error = mysqli_error($recurso);
+        echo "Error en la consulta SQL: " . $error;
         @mysqli_close($recurso);
         return FALSE;
     } else {
@@ -116,20 +118,17 @@ function insertar($transaccion)
 {
     global $usuario_db, $bd, $puerto_usuario_db_web, $clave_usuario_db_web, $host_usuario_db_web;
 
-    $recurso = @mysqli_connect($host_usuario_db_web, $usuario_db, $clave_usuario_db_web, $bd, $puerto_usuario_db_web);
+    $recurso = @mysqli_connect($host_usuario_db_web, $usuario_db, $clave_usuario_db_web, $bd);
 
     if ($recurso != FALSE) {
         $result = @mysqli_query($recurso, $transaccion);
 
-        $str = mysqli_error($recurso);
-
-        // if (!empty($str)) echo $str . " .... " . $transaccion;
-
-        @mysqli_close($recurso);
-
         if ($result != FALSE) {
             return $result;
         } else {
+            $str = mysqli_error($recurso);
+            echo $str;
+            @mysqli_close($recurso);
             return FALSE;
         }
     }

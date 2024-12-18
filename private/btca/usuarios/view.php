@@ -38,7 +38,7 @@ class ViewUsuarios
                                                     <div class="row no-gutters">
                                                         <div class="col-lg-6 col-12 mb-3 px-2">
                                                             <label for="nombre" class="label-input">Nombre: </label>
-                                                            <input type="text" placeholder="Ingrese Nombre" name="user_login" id="user_login" />
+                                                            <input type="text" placeholder="Ingrese Nombre" name="nombre" id="nombre" />
                                                         </div>
                                                         
                                                         <div class="col-lg-6 col-12 mb-3 px-2">
@@ -51,14 +51,9 @@ class ViewUsuarios
                                                             <input type="text" placeholder="Ingrese Usuario" name="usuario" id="usuario" />
                                                         </div>
 
-                                                        <div class="col-lg-6 col-12 mb-3 px-2">
+                                                        <div class="col-lg-12 col-12 mb-3 px-2">
                                                             <label for="password" class="label-input">Contrase&ntilde;a: </label>
                                                             <input type="password" placeholder="Ingrese Contrase&ntilde;a" id="password" name="password" />
-                                                        </div>
-
-                                                        <div class="col-lg-6 col-12 mb-3 px-2">
-                                                            <label for="confirm_password" class="label-input">Confirmar Contrase&ntilde;a: </label>
-                                                            <input type="password" placeholder="Ingrese Contrase&ntilde;a" id="confirm_password" name="confirm_password" />
                                                         </div>
 
                                                         <div class="col-lg-6 col-12 mb-3 px-2">
@@ -70,14 +65,15 @@ class ViewUsuarios
                                                         </div>
 
                                                         <div class="col-lg-6 col-12 mb-3 px-2">
-                                                            <label for="Perfil" class="label-input">Estado: </label>
-                                                            <select name="perfil" id="perfil">
+                                                            <label for="estado" class="label-input">Estado: </label>
+                                                            <select name="estado" id="estado">
                                                                 <option value="">Seleccionar</option>
-                                                                <option value="A">Activo</option>
-                                                                <option value="I">Inactivo</option>
+                                                                <option value="1">Activo</option>
+                                                                <option value="0">Inactivo</option>
                                                             </select>
                                                         </div>
 
+                                                        <label for="imagen" class="label-input">Imagen Perfil: </label>
                                                         <div class="wrap col-lg-12" style="justify-items: center;">
                                                             <div class="thumb">
                                                                 <img id="img" src="https://png.pngtree.com/png-clipart/20230915/original/pngtree-plus-sign-symbol-simple-design-pharmacy-logo-black-vector-png-image_12186664.png"/>
@@ -88,7 +84,7 @@ class ViewUsuarios
                                                         </div>
 
                                                         <div class="col-lg-12 col-12 px-2 pt-2">
-                                                            <button type="submit" class="login-btn" id="ingresar_usuario">Ingresar</button>
+                                                            <button type="submit" class="login-btn" id="ingresar_usuario">REGISTRAR</button>
                                                         </div>
 
                                                     </div>
