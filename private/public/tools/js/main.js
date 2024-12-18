@@ -103,6 +103,7 @@ async function iniciarEventos() {
     sessionStart();
   } else if (section == "principal") {
     consultarContenido();
+    imagenPerfil();
   } else {
     sessionStart();
   }
@@ -166,8 +167,8 @@ function sessionStart() {
               location.href = destination_url;
             }, 3000);
           } else {
-            elemento.prop("disabled", false);
-            notification_message("error", message, 10000, true);
+            alertify.set("notifier", "position", "top-right");
+            alertify.error(message, 10);
           }
           return 2;
         },
@@ -243,5 +244,36 @@ function consultarContenido() {
         return 2;
       },
     });
+  });
+}
+
+function preview(input) {
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      var img = new Image();
+      img.onload = function () {
+        $("#img").attr({ src: e.target.result, width: img.width });
+        $("#remove-img").show();
+      };
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
+function imagenPerfil() {
+  $("body").on("change", "#upload", function () {
+    $("#img").css({ top: 0, left: 0 });
+    preview(this);
+    $("#img").draggable({ containment: "parent", scroll: false });
+  });
+
+  $("body").on("click", "#remove-img", function () {
+    $("#img").attr(
+      "src",
+      "https://png.pngtree.com/png-clipart/20230915/original/pngtree-plus-sign-symbol-simple-design-pharmacy-logo-black-vector-png-image_12186664.png"
+    );
+    $(this).hide();
   });
 }
