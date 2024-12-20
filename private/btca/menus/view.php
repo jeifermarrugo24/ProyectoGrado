@@ -45,10 +45,10 @@ class HelperMenu
                             $menu_icono
                             <p>
                                 $menu_title
-                                <i class="right fas fa-angle-right"></i>
+                                <i class="right fas fa-angle-right mr-2"></i>
                             </p>
                         </a>
-                        <ul class="nav nav-treeview pl-4">
+                        <ul class="nav nav-treeview" style="margin-top: 10px; margin-left: 10px;">
                             $child_menu
                         </ul>
                     </li>

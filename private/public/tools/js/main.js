@@ -236,11 +236,15 @@ function consultarContenido() {
             var destination_url = decodeURIComponent(data.destination_url);
             location.href = destination_url;
           }
+
+          if (atr_contenido == "accion_consultar_usuario") {
+          }
         } else {
           alertify.set("notifier", "position", "top-right");
           alertify.error(message, 10);
         }
 
+        Tables();
         hide_spinner();
         return 2;
       },
@@ -285,7 +289,8 @@ function RegistrarUsuario() {
     var elemento = $(this);
     var contenedor = $(id_contenedor);
     var variables = obtener_variables(id_contenedor);
-    var imagen_base64 = document.getElementById("img").src;
+
+    console.log(variables[0]);
 
     if (
       check_empty_field("nombre") &&
@@ -295,11 +300,43 @@ function RegistrarUsuario() {
       check_empty_field("perfil") &&
       check_empty_field("estado")
     ) {
+      const fileInput = document.getElementById("upload");
+      const file = fileInput.files[0];
+
+      const maxFileSize = 5 * 1024 * 1024;
+      if (file.size > maxFileSize) {
+        alertify.set("notifier", "position", "top-right");
+        alertify.error("El tamaño de la imagen no debe exceder los 5 MB", 10);
+        return;
+      }
+
+      const validFileTypes = ["image/jpeg", "image/png", "image/gif"];
+      if (!validFileTypes.includes(file.type)) {
+        alertify.set("notifier", "position", "top-right");
+        alertify.error("Solo se permiten imágenes JPG, PNG o GIF", 10);
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("action", "ingresar_usuario");
+      variables[0]
+        .substring(1)
+        .split("&")
+        .filter((pair) => pair && !pair.startsWith("undefined"))
+        .forEach((pair) => {
+          const [key, value] = pair.split("=");
+          if (key && value) {
+            formData.append(key, decodeURIComponent(value));
+          }
+        });
+      formData.append("file", file);
+
       ajax({
         method: "POST",
         url: internal_url_private,
-        data:
-          "action=ingresar_usuario" + variables[0] + "&imagen=" + imagen_base64,
+        data: formData,
+        contentType: false,
+        processData: false,
         dataType: "json",
         beforeSend: function () {
           show_spinner();
@@ -391,4 +428,43 @@ function obtener_variables(objeto) {
     params = objeto;
   }
   return [params, archivo];
+}
+
+function Tables() {
+  $("#DataPage").DataTable({
+    paging: true,
+    autoWidth: true,
+    order: [],
+    language: {
+      decimal: "",
+      emptyTable: "No data available in table",
+      info: "Mostrando _START_ to _END_ of _TOTAL_ resultados",
+      infoEmpty: "Mostrando 0 to 0 of 0 resultados",
+      infoFiltered: "(Filtrado por _MAX_ total entries)",
+      infoPostFix: "",
+      thousands: ",",
+      lengthMenu: "Mostrar:  _MENU_",
+      loadingRecords: "Loading...",
+      processing: "",
+      search: "Buscar:",
+      zeroRecords: "No existen resultados...",
+      paginate: {
+        first: "Primera",
+        last: "Ultima",
+        next: ">",
+        previous: "<",
+      },
+      aria: {
+        orderable: "Order by this column",
+        orderableReverse: "Reverse order this column",
+      },
+    },
+    layout: {
+      bottomEnd: {
+        paging: {
+          firstLast: false,
+        },
+      },
+    },
+  });
 }

@@ -22,6 +22,8 @@ function getContenido($params)
 
     if ($contenido == "accion_ingresar_usuario") {
         $msj = ViewUsuarios::ingresarUsuarios();
+    } else if ($contenido == "accion_consultar_usuario") {
+        $msj = ViewUsuarios::consultarUsuarios();
     }
 
     $retorno = json_encode(

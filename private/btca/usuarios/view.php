@@ -29,7 +29,7 @@ class ViewUsuarios
                                 <div class="card-body" style="padding-top:0;">
                                     <div class="row no-gutters">
                                         <div class="col-lg-12">
-                                            <div class="row no-gutters" id="contenedor-formulario">
+                                            <form class="row no-gutters" id="contenedor-formulario" method="POST" enctype="multipart/form-data">
                                                 <div class="col-lg-12 px-2 pt-2">
                                                     <h2><b style="font-size:17px;">DATOS DEL USUARIO</b></h2>
                                                     <hr>
@@ -79,7 +79,7 @@ class ViewUsuarios
                                                                 <img id="img" src="https://png.pngtree.com/png-clipart/20230915/original/pngtree-plus-sign-symbol-simple-design-pharmacy-logo-black-vector-png-image_12186664.png"/>
                                                                 <button id="remove-img" style="position: absolute; top: 5px; right: 5px; background: red; color: white; border: none; border-radius: 50%; width: 25px; height: 25px; display: none; cursor: pointer;">X</button>
                                                             </div>
-                                                            <label for="upload">ACTUALIZAR IMAGEN
+                                                            <label for="upload">SUBIR IMAGEN
                                                             <input type='file' id="upload"></label>
                                                         </div>
 
@@ -89,7 +89,99 @@ class ViewUsuarios
 
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </form>
+                                        </div>
+                                    </div>  
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        HTML;
+
+        return $html;
+    }
+
+    public static function consultarUsuarios()
+    {
+
+
+        $list_usuarios = ModelUsuarios::list_usuarios();
+        $tbody = '';
+        if (is_array($list_usuarios) && count($list_usuarios) > 0) {
+            foreach ($list_usuarios as $key => $value) {
+
+                $id = $value['id'];
+                $usuario = $value['usuario'];
+                $nombre = $value['nombre'];
+                $perfil = $value['perfil'];
+                if ($perfil == '1') {
+                    $perfil_nombre = <<<HTML
+                        <span class="badge text-bg-primary" style="padding:6px;">Superadministrador</span>
+                    HTML;
+                } else {
+                    $perfil_usuario = ModelUsuarios::list_perfiles($perfil);
+                    $perfil_nombre = $perfil_usuario[0]['perfil_nombre'];
+                }
+                $estado = $value['estado'];
+                if ($estado == '1') {
+                    $estado = 'Activo';
+                } else {
+                    $estado = 'Inactivo';
+                }
+
+                $tbody .= <<<HTML
+                    <tr>
+                        <td class="text-center p-2">$id</td>
+                        <td class="text-center">$nombre</td>
+                        <td class="text-center">$usuario</td>
+                        <td class="text-center">$perfil_nombre</td>
+                        <td class="text-center">$estado</td>
+                    </tr>
+                HTML;
+            }
+        }
+
+        $html = <<<HTML
+            <div class="flex-grow-1 px-4">
+                <div class="row no-gutters justify-content-center">
+                    <div class="pt-4 px-3 col-lg-12">
+                        <h1 class="pr-3 text-left"><b style="font-size:20px; text-transform:uppercase;">Listado De Usuarios</b></h1>
+
+                        <div class="col-12 col-lg-10 p-3 m-auto">
+                            <div class="card">
+                                <div class="card-body" style="padding-top:0;">
+                                    <div class="row no-gutters">
+                                        <div class="col-lg-12">
+                                            <form class="row no-gutters" id="contenedor-formulario" method="POST" enctype="multipart/form-data">
+                                                <div class="col-lg-12 px-2 pt-2">
+                                                    <h2><b style="font-size:17px;">DATOS DE LOS USUARIOS REGISTRADOS</b></h2>
+                                                    <hr>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="row no-gutters">
+                                                        <div class="table-responsive">
+                                                            <table id="DataPage" class="display table-striped my-2" style="width:100%; border: 1px solid #F2F2F2;">
+                                                                <thead class="mt-4">
+                                                                    <tr>
+                                                                        <th class="text-center p-1">ID</th>
+                                                                        <th class="text-center p-1">NOMBRE</th>
+                                                                        <th class="text-center p-1">USUARIO</th>
+                                                                        <th class="text-center p-1">PERFIL</th>
+                                                                        <th class="text-center p-1">ESTADO</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    $tbody
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>  
                                 </div>

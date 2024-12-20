@@ -15,10 +15,13 @@ if ($check_status == false) {
     $user_name = $check_status['user_name'];
     $user_last_name = $check_status['user_last_name'];
     $user_imagen = $check_status['user_imagen'];
+    if ($user_imagen != 'https://static.vecteezy.com/system/resources/previews/011/186/876/non_2x/male-profile-picture-symbol-vector.jpg') {
+        $user_imagen = $url_servidor . '/../public/tools/images/images_perfiles/' . $user_imagen;
+    }
     $txt_iniciales = $user_name[0] . $user_last_name[0];
     $hora_actual = date("H:i");
     if ($user_imagen == "") {
-        $user_imagen = "https://cdn-icons-png.flaticon.com/512/3364/3364044.png";
+        $user_imagen = "https://static.vecteezy.com/system/resources/previews/011/186/876/non_2x/male-profile-picture-symbol-vector.jpg";
     }
 }
 
@@ -47,6 +50,7 @@ $html_menu = HelperMenu::getMenu(0, $_SESSION['USER_PROFILE']);
     <link rel="stylesheet" href="<?php echo $url_servidor; ?>/../../dist/css/adminlte.min.css">
     <link rel="stylesheet" href="<?php echo $url_servidor; ?>/../../plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <link rel="stylesheet" href="<?php echo $url_servidor; ?>/../../plugins/fontawesome-free/css/all.min.css">
+    <link href="<?php echo $url_servidor; ?>/../public/tools/datatables/dataTables.min.css" rel="stylesheet" type="text/css">
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed" data-panel-auto-height-mode="height">
@@ -186,7 +190,6 @@ $html_menu = HelperMenu::getMenu(0, $_SESSION['USER_PROFILE']);
 
     <script src="<?php echo $url_servidor; ?>/../public/tools/spinner/spinner.js?version=<?php echo $vrand; ?>"></script>
     <script src="<?php echo $url_servidor; ?>/../public/tools/js/jquery-3.7.1.min.js"></script>
-    <script src="<?php echo $url_servidor; ?>/../public/tools/js/main.js?version=<?php echo $vrand; ?>"></script>
     <script src="<?php echo $url_servidor; ?>/../public/tools/magnific/jquery.magnific-popup.min.js"></script>
     <script src="<?php echo $url_servidor; ?>/../public/tools/alertify/alertify.min.js"></script>
     <script src="<?php echo $url_servidor; ?>/../../plugins/jquery/jquery.min.js"></script>
@@ -198,6 +201,10 @@ $html_menu = HelperMenu::getMenu(0, $_SESSION['USER_PROFILE']);
     <script src="<?php echo $url_servidor; ?>/../../dist/js/adminlte.js"></script>
     <script src="<?php echo $url_servidor; ?>/../../dist/js/demo.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="<?php echo $url_servidor; ?>/../public/tools/datatables/dataTables.min.js"></script>
+    <script src="<?php echo $url_servidor; ?>/../public/tools/datatables/dataTables.bootstrap5.js"></script>
+    <script src="<?php echo $url_servidor; ?>/../public/tools/datatables/bootstrap.bundle.min.js"></script>
+    <script src="<?php echo $url_servidor; ?>/../public/tools/js/main.js?version=<?php echo $vrand; ?>"></script>
 </body>
 
 </html>
