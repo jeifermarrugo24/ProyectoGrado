@@ -105,6 +105,7 @@ async function iniciarEventos() {
     consultarContenido();
     imagenPerfil();
     RegistrarUsuario();
+    EditarUsuario();
   } else {
     sessionStart();
   }
@@ -548,7 +549,7 @@ function RegistrarUsuario() {
   });
 }
 
-function EditarUser(id) {
+function ModalEditarUser(id) {
   const formData = new FormData();
   formData.append("action", "modal_editar_usuario");
   formData.append("id_usuario", id);
@@ -569,5 +570,60 @@ function EditarUser(id) {
       SweetModal(html, 1000);
       hide_spinner();
     },
+  });
+}
+
+function EditarUsuario() {
+  $("body").on("click", "#editar_usuario", function () {
+    var id_contenedor = "#contenedor-formulario-edit";
+    var elemento = $(this);
+    var contenedor = $(id_contenedor);
+    var variables = obtener_variables(id_contenedor);
+    var id_select = document.getElementById("id_usuario").value;
+
+    const formData = new FormData();
+    formData.append("action", "editar_usuario");
+    variables[0]
+      .substring(1)
+      .split("&")
+      .filter((pair) => pair && !pair.startsWith("undefined"))
+      .forEach((pair) => {
+        const [key, value] = pair.split("=");
+        if (key && value) {
+          formData.append(key, decodeURIComponent(value));
+        }
+      });
+    formData.append("id_usuario", id_select);
+
+    ajax({
+      method: "POST",
+      url: internal_url_private,
+      data: formData,
+      contentType: false,
+      processData: false,
+      dataType: "json",
+      beforeSend: function () {
+        show_spinner();
+        elemento.prop("disabled", true);
+      },
+      success: function (data) {
+        var code = data.code;
+        var message = data.message;
+        var campo = data.campo;
+
+        if (code === "200") {
+          hide_spinner();
+          alertify.set("notifier", "position", "top-right");
+          alertify.success(message, 10);
+        } else {
+          hide_spinner();
+          alertify.set("notifier", "position", "top-right");
+          alertify.error(message, 10);
+          if (campo.length) {
+            $("#" + campo).addClass("error-input");
+          }
+        }
+      },
+    });
   });
 }

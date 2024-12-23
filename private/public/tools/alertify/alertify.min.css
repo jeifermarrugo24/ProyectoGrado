@@ -13,7 +13,7 @@
   padding: 0;
   margin: 0;
   background-color: #252525;
-  opacity: 0.5;
+  opacity: 0;
 }
 .alertify .ajs-modal {
   position: fixed;
@@ -861,7 +861,7 @@
   transition-duration: 0.5s;
   -webkit-transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
   transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  opacity: 1;
+  opacity: 0;
   max-height: 100%;
   padding: 15px;
   margin-top: 10px;

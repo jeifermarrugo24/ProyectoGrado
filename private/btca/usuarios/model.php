@@ -50,6 +50,23 @@ class ModelUsuarios
         return $res;
     }
 
+    public static function editar_usuarios($data)
+    {
+        $id_usuario = $data['id_usuario'];
+        $nombre = $data['nombre'];
+        $apellido = $data['apellido'];
+        $usuario = $data['usuario'];
+        $perfil = $data['perfil'];
+        $estado = $data['estado'];
+
+        $sqlquery = "UPDATE usuarios SET usuario = '$usuario', nombre = '$nombre $apellido', perfil = '$perfil', estado = '$estado'  WHERE id = '$id_usuario'";
+
+        $res = actualizar($sqlquery);
+
+        return $res;
+    }
+
+
     public static function list_usuarios()
     {
 

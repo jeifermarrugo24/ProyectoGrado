@@ -138,7 +138,7 @@ class ViewUsuarios
                     $perfil_usuario = ModelUsuarios::list_perfiles($perfil);
                     $perfil_nombre = $perfil_usuario[0]['perfil_nombre'];
                     $editar_user = <<<HTML
-                        <a href="javascript:void(0)" onclick="EditarUser('$id')">
+                        <a href="javascript:void(0)" onclick="ModalEditarUser('$id')">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="svg-color bi bi-arrows-fullscreen" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd" d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707m4.344 0a.5.5 0 0 1 .707 0l4.096 4.096V11.5a.5.5 0 1 1 1 0v3.975a.5.5 0 0 1-.5.5H11.5a.5.5 0 0 1 0-1h2.768l-4.096-4.096a.5.5 0 0 1 0-.707m0-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707m-4.344 0a.5.5 0 0 1-.707 0L1.025 1.732V4.5a.5.5 0 0 1-1 0V.525a.5.5 0 0 1 .5-.5H4.5a.5.5 0 0 1 0 1H1.732l4.096 4.096a.5.5 0 0 1 0 .707"/>
                             </svg>
@@ -262,13 +262,16 @@ class ViewUsuarios
                             <div class="card-body" style="padding-top:0;">
                                 <div class="row no-gutters">
                                     <div class="col-lg-12">
-                                        <div class="row no-gutters" id="contenedor-formulario">
+                                        <div class="row no-gutters" id="contenedor-formulario-edit">
                                             <div class="col-lg-12 px-2 pt-2">
                                                 <h2><b style="font-size:17px;">DATOS DEL USUARIO - $nombre</b></h2>
                                                 <hr>
                                             </div>
                                             <div class="col-12 p-3">
                                                 <div class="row no-gutters">
+
+                                                    <input type="hidden" id="id_usuario" value = "$id">
+
                                                     <div class="col-lg-6 col-12 mb-3 px-2">
                                                         <label for="nombre" class="label-input">Nombre: </label>
                                                         <input type="text" placeholder="Ingrese Nombre" name="nombre" id="nombre" value="$nombre"/>
@@ -307,8 +310,6 @@ class ViewUsuarios
                                                             <img id="img" src="$img_perfil"/>
                                                             <button id="remove-img" style="position: absolute; top: 5px; right: 5px; background: red; color: white; border: none; border-radius: 50%; width: 25px; height: 25px; display: none; cursor: pointer;">X</button>
                                                         </div>
-                                                        <label for="upload">SUBIR IMAGEN
-                                                        <input type='file' id="upload"></label>
                                                     </div>
 
                                                     <div class="col-lg-12 col-12 px-2">

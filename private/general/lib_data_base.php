@@ -175,7 +175,7 @@ function actualizar($transaccion)
 {
     global $usuario_db, $bd, $puerto_usuario_db_web, $clave_usuario_db_web, $host_usuario_db_web;
 
-    $database = @mysqli_connect($host_usuario_db_web, $usuario_db, $clave_usuario_db_web, $bd, $puerto_usuario_db_web);
+    $database = @mysqli_connect($host_usuario_db_web, $usuario_db, $clave_usuario_db_web, $bd);
 
     if ($database != FALSE) {
         $result = @mysqli_query($database, $transaccion);
