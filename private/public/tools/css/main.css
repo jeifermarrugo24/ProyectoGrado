@@ -264,3 +264,27 @@ label[for="upload"] input {
   width: auto !important;
   transition: all 0.4s;
 }
+
+.svg-color {
+  width: 16;
+  height: 16;
+  fill: #005cc5;
+}
+
+.invalid {
+  color: red;
+  font-weight: bold;
+}
+
+.valid {
+  color: green;
+  font-weight: bold;
+}
+
+#progressBar {
+  border-radius: 15px;
+}
+.progress {
+  border-radius: 15px !important;
+  margin-bottom: 5px !important;
+}

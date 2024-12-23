@@ -204,6 +204,7 @@ $html_menu = HelperMenu::getMenu(0, $_SESSION['USER_PROFILE']);
     <script src="<?php echo $url_servidor; ?>/../public/tools/datatables/dataTables.min.js"></script>
     <script src="<?php echo $url_servidor; ?>/../public/tools/datatables/dataTables.bootstrap5.js"></script>
     <script src="<?php echo $url_servidor; ?>/../public/tools/datatables/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="<?php echo $url_servidor; ?>/../public/tools/js/main.js?version=<?php echo $vrand; ?>"></script>
 </body>
 

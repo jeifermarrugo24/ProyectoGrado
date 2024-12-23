@@ -4,7 +4,12 @@ class ModelUsuarios
 
     public static function list_perfiles($id = '')
     {
-        $query = "SELECT * FROM perfiles WHERE 1 = 1 AND perfil_estado = 'A' AND perfil_id != '1' AND perfil_id = '$id' ORDER BY perfil_nombre ASC";
+        $condition = '';
+        if ($id != '') {
+            $condition .= "AND perfil_id = '$id'";
+        }
+
+        $query = "SELECT * FROM perfiles WHERE 1 = 1 AND perfil_estado = 'A' AND perfil_id != '1' $condition ORDER BY perfil_nombre ASC";
 
         $result = consultar($query);
 
@@ -52,5 +57,13 @@ class ModelUsuarios
         $result = consultar($query);
 
         return $result;
+    }
+
+    public static function especific_user($id)
+    {
+        $query = "SELECT id, usuario, nombre, perfil, img_perfil, estado FROM usuarios WHERE 1=1 AND id = '$id' AND estado='1'";
+        $result = consultar($query);
+
+        return $result[0];
     }
 }

@@ -130,6 +130,15 @@ function modalMagnificPopup(tipo) {
   });
 }
 
+function SweetModal(contenido, tamano) {
+  Swal.fire({
+    html: contenido,
+    showConfirmButton: false,
+    showCloseButton: true,
+    width: tamano,
+  });
+}
+
 function modalMagnificPopupClose() {
   $.magnificPopup.close();
 }
@@ -245,6 +254,7 @@ function consultarContenido() {
         }
 
         Tables();
+        validarContrasena();
         hide_spinner();
         return 2;
       },
@@ -280,91 +290,6 @@ function imagenPerfil() {
       "https://png.pngtree.com/png-clipart/20230915/original/pngtree-plus-sign-symbol-simple-design-pharmacy-logo-black-vector-png-image_12186664.png"
     );
     $(this).hide();
-  });
-}
-
-function RegistrarUsuario() {
-  $("body").on("click", "#ingresar_usuario", function () {
-    var id_contenedor = "#contenedor-formulario";
-    var elemento = $(this);
-    var contenedor = $(id_contenedor);
-    var variables = obtener_variables(id_contenedor);
-
-    console.log(variables[0]);
-
-    if (
-      check_empty_field("nombre") &&
-      check_empty_field("apellido") &&
-      check_empty_field("usuario") &&
-      check_empty_field("password") &&
-      check_empty_field("perfil") &&
-      check_empty_field("estado")
-    ) {
-      const fileInput = document.getElementById("upload");
-      const file = fileInput.files[0];
-
-      const maxFileSize = 5 * 1024 * 1024;
-      if (file.size > maxFileSize) {
-        alertify.set("notifier", "position", "top-right");
-        alertify.error("El tamaño de la imagen no debe exceder los 5 MB", 10);
-        return;
-      }
-
-      const validFileTypes = ["image/jpeg", "image/png", "image/gif"];
-      if (!validFileTypes.includes(file.type)) {
-        alertify.set("notifier", "position", "top-right");
-        alertify.error("Solo se permiten imágenes JPG, PNG o GIF", 10);
-        return;
-      }
-
-      const formData = new FormData();
-      formData.append("action", "ingresar_usuario");
-      variables[0]
-        .substring(1)
-        .split("&")
-        .filter((pair) => pair && !pair.startsWith("undefined"))
-        .forEach((pair) => {
-          const [key, value] = pair.split("=");
-          if (key && value) {
-            formData.append(key, decodeURIComponent(value));
-          }
-        });
-      formData.append("file", file);
-
-      ajax({
-        method: "POST",
-        url: internal_url_private,
-        data: formData,
-        contentType: false,
-        processData: false,
-        dataType: "json",
-        beforeSend: function () {
-          show_spinner();
-          elemento.prop("disabled", true);
-        },
-        success: function (data) {
-          var code = data.code;
-          var message = data.message;
-          var campo = data.campo;
-
-          if (code === "200") {
-            hide_spinner();
-            alertify.set("notifier", "position", "top-right");
-            alertify.success(message, 10);
-          } else {
-            hide_spinner();
-            alertify.set("notifier", "position", "top-right");
-            alertify.error(message, 10);
-            if (campo.length) {
-              $("#" + campo).addClass("error-input");
-            }
-          }
-        },
-      });
-    } else {
-      alertify.set("notifier", "position", "top-right");
-      alertify.error("Por favor revisé los campos ingresados", 10);
-    }
   });
 }
 
@@ -465,6 +390,184 @@ function Tables() {
           firstLast: false,
         },
       },
+    },
+  });
+}
+
+function validarContrasena() {
+  $("#password").keyup(function () {
+    var password = $("#password").val();
+
+    if (password === "") {
+      $(".validationList li").removeClass("invalid valid");
+      $("#progressBar")
+        .css("width", "0%")
+        .removeClass("bg-success bg-warning bg-danger");
+      return false;
+    }
+
+    // Definir validaciones
+    var validations = [
+      { element: $("#length"), valid: password.length >= 8 },
+      { element: $("#upperCase"), valid: /[A-Z]/.test(password) },
+      { element: $("#lowerCase"), valid: /[a-z]/.test(password) },
+      { element: $("#number"), valid: /[0-9]/.test(password) },
+      {
+        element: $("#specialCharacter"),
+        valid: /[~`!#$%^&*+=\-[\]\\';,/{}|":<>?]/.test(password),
+      },
+    ];
+
+    var validCount = 0;
+
+    // Validar cada criterio
+    validations.forEach(function (validation) {
+      toggleValidationClass(validation.element, validation.valid);
+      if (validation.valid) validCount++;
+    });
+
+    // Calcular el progreso y actualizar la barra
+    var progressPercentage = (validCount / validations.length) * 100;
+    $("#progressBar")
+      .css("width", progressPercentage + "%")
+      .attr("aria-valuenow", progressPercentage);
+
+    // Cambiar colores de la barra según el progreso
+    if (progressPercentage === 100) {
+      $("#progressBar")
+        .removeClass("bg-warning bg-danger")
+        .addClass("bg-success");
+    } else if (progressPercentage >= 50) {
+      $("#progressBar")
+        .removeClass("bg-success bg-danger")
+        .addClass("bg-warning");
+    } else {
+      $("#progressBar")
+        .removeClass("bg-success bg-warning")
+        .addClass("bg-danger");
+    }
+  });
+}
+
+function toggleValidationClass(element, isValid) {
+  if (isValid) {
+    element.removeClass("invalid").addClass("valid");
+  } else {
+    element.removeClass("valid").addClass("invalid");
+  }
+}
+
+function RegistrarUsuario() {
+  $("body").on("click", "#ingresar_usuario", function () {
+    var id_contenedor = "#contenedor-formulario";
+    var elemento = $(this);
+    var contenedor = $(id_contenedor);
+    var variables = obtener_variables(id_contenedor);
+
+    console.log(variables[0]);
+
+    validarContrasena();
+
+    // Verificar si la contraseña es válida antes de continuar
+    var passwordValid = $(".validationList li.valid").length === 5;
+
+    if (
+      check_empty_field("nombre") &&
+      check_empty_field("apellido") &&
+      check_empty_field("usuario") &&
+      check_empty_field("password") &&
+      check_empty_field("perfil") &&
+      check_empty_field("estado") &&
+      passwordValid
+    ) {
+      const fileInput = document.getElementById("upload");
+      const file = fileInput.files[0];
+
+      const maxFileSize = 5 * 1024 * 1024;
+      if (file.size > maxFileSize) {
+        alertify.set("notifier", "position", "top-right");
+        alertify.error("El tamaño de la imagen no debe exceder los 5 MB", 10);
+        return;
+      }
+
+      const validFileTypes = ["image/jpeg", "image/png", "image/gif"];
+      if (!validFileTypes.includes(file.type)) {
+        alertify.set("notifier", "position", "top-right");
+        alertify.error("Solo se permiten imágenes JPG, PNG o GIF", 10);
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("action", "ingresar_usuario");
+      variables[0]
+        .substring(1)
+        .split("&")
+        .filter((pair) => pair && !pair.startsWith("undefined"))
+        .forEach((pair) => {
+          const [key, value] = pair.split("=");
+          if (key && value) {
+            formData.append(key, decodeURIComponent(value));
+          }
+        });
+      formData.append("file", file);
+
+      ajax({
+        method: "POST",
+        url: internal_url_private,
+        data: formData,
+        contentType: false,
+        processData: false,
+        dataType: "json",
+        beforeSend: function () {
+          show_spinner();
+          elemento.prop("disabled", true);
+        },
+        success: function (data) {
+          var code = data.code;
+          var message = data.message;
+          var campo = data.campo;
+
+          if (code === "200") {
+            hide_spinner();
+            alertify.set("notifier", "position", "top-right");
+            alertify.success(message, 10);
+          } else {
+            hide_spinner();
+            alertify.set("notifier", "position", "top-right");
+            alertify.error(message, 10);
+            if (campo.length) {
+              $("#" + campo).addClass("error-input");
+            }
+          }
+        },
+      });
+    } else {
+      alertify.set("notifier", "position", "top-right");
+      alertify.error("Por favor revisé los campos ingresados", 10);
+    }
+  });
+}
+
+function EditarUser(id) {
+  const formData = new FormData();
+  formData.append("action", "modal_editar_usuario");
+  formData.append("id_usuario", id);
+
+  ajax({
+    method: "POST",
+    url: internal_url_private,
+    data: formData,
+    contentType: false,
+    processData: false,
+    dataType: "json",
+    beforeSend: function () {
+      show_spinner();
+    },
+    success: function (data) {
+      let code = data.code;
+      let html = data.html;
+      SweetModal(html, 1000);
+      hide_spinner();
     },
   });
 }

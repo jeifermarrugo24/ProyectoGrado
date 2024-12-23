@@ -104,6 +104,7 @@ if ($check_status == false) {
                 <a href="javascript:void(0);" onclick="modalMagnificPopup('modal-user-register')">No tienes una cuenta?</a>
             </div>
 
+
         </div>
     </main>
 
