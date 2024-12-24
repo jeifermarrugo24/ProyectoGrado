@@ -39,7 +39,6 @@ $html_menu = HelperMenu::getMenu(0, $_SESSION['USER_PROFILE']);
     <title>INICIO - BIBLIOTECA JES</title>
     <link rel="shortcut icon" href="<?php echo $url_servidor; ?>/../public/tools/images/icono.png" type="image/x-icon">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link href="<?php echo $url_servidor; ?>/../public/tools/magnific/magnific-popup.css" rel="stylesheet" type="text/css">
     <link href="<?php echo $url_servidor; ?>/../public/tools/alertify/alertify.min.css" rel="stylesheet" type="text/css">
     <link href="<?php echo $url_servidor; ?>/../public/tools/alertify/default.min.css" rel="stylesheet" type="text/css">
@@ -47,6 +46,7 @@ $html_menu = HelperMenu::getMenu(0, $_SESSION['USER_PROFILE']);
     <link href="<?php echo $url_servidor; ?>/../public/tools/alertify/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="<?php echo $url_servidor; ?>/../public/tools/spinner/spinner.css?version=<?php echo $vrand; ?>" rel="stylesheet">
     <link href="<?php echo $url_servidor; ?>/../public/tools/css/main.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="<?php echo $url_servidor; ?>/../../dist/css/adminlte.min.css">
     <link rel="stylesheet" href="<?php echo $url_servidor; ?>/../../plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <link rel="stylesheet" href="<?php echo $url_servidor; ?>/../../plugins/fontawesome-free/css/all.min.css">
@@ -102,7 +102,7 @@ $html_menu = HelperMenu::getMenu(0, $_SESSION['USER_PROFILE']);
                 </li>
                 <li class="nav-item">
                     <a class="nav-link dropdown-item w-100 traer-contenido hvr-shrink option-menu-mobile"
-                        style="font-size: 14px;" contenido="salir-extranet"
+                        style="font-size: 14px;" contenido="cerrar_session"
                         href="javascript:void(0);">
                         <strong>
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="14" height="14" fill="#ff3f3f">
@@ -200,12 +200,12 @@ $html_menu = HelperMenu::getMenu(0, $_SESSION['USER_PROFILE']);
     <script src="<?php echo $url_servidor; ?>/../../plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <script src="<?php echo $url_servidor; ?>/../../dist/js/adminlte.js"></script>
     <script src="<?php echo $url_servidor; ?>/../../dist/js/demo.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="<?php echo $url_servidor; ?>/../public/tools/datatables/dataTables.min.js"></script>
     <script src="<?php echo $url_servidor; ?>/../public/tools/datatables/dataTables.bootstrap5.js"></script>
     <script src="<?php echo $url_servidor; ?>/../public/tools/datatables/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="<?php echo $url_servidor; ?>/../public/tools/js/main.js?version=<?php echo $vrand; ?>"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 
 </html>

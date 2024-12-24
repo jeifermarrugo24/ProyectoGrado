@@ -14,17 +14,27 @@ function getContenido($params)
     $contenido = $params['atr_contenido'];
     $code = "200";
 
-    if ($contenido == 'salir-extranet') {
+    if ($contenido == 'cerrar_session') {
         include_once __DIR__ . "/lib_user_information.php";
         echo cerrar_sesion_actual();
         exit();
     }
 
+    //ADMINISTRADOR DE USUARIOS
     if ($contenido == "accion_ingresar_usuario") {
         $msj = ViewUsuarios::ingresarUsuarios();
     } else if ($contenido == "accion_consultar_usuario") {
         $msj = ViewUsuarios::consultarUsuarios();
     }
+    //FIN ADMINISTRADOR DE USUARIOS
+
+    //ADMINISTRADOR DE MENUS
+    if ($contenido == "accion_ingresar_menu") {
+        $msj = viewMenu::ingresarNuevoMenu();
+    } else if ($contenido == "accion_consultar_usuario") {
+        $msj = ViewUsuarios::consultarUsuarios();
+    }
+    //FIN ADMINISTRADOR DE MENUS
 
     $retorno = json_encode(
         array(

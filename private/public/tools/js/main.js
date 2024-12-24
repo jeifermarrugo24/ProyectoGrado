@@ -106,6 +106,7 @@ async function iniciarEventos() {
     imagenPerfil();
     RegistrarUsuario();
     EditarUsuario();
+    cerrarSesionAutomaticamente();
   } else {
     sessionStart();
   }
@@ -242,7 +243,7 @@ function consultarContenido() {
             location.href = destination_url;
           }
 
-          if (atr_contenido == "salir-extranet") {
+          if (atr_contenido == "cerrar_session") {
             var destination_url = decodeURIComponent(data.destination_url);
             location.href = destination_url;
           }
@@ -256,9 +257,43 @@ function consultarContenido() {
 
         Tables();
         validarContrasena();
+        accordion();
         hide_spinner();
         return 2;
       },
+    });
+  });
+}
+
+function cerrarSesionAutomaticamente() {
+  let timeout;
+
+  function resetTimer() {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      $(".traer-contenido[contenido='cerrar_session']").trigger("click");
+    }, 600000);
+  }
+
+  $(document).on("mousemove keydown click scroll", resetTimer);
+
+  resetTimer();
+}
+
+function accordion() {
+  document.querySelectorAll(".accordion-button").forEach((button) => {
+    button.addEventListener("click", (e) => {
+      const target = document.querySelector(
+        e.target.getAttribute("data-bs-target")
+      );
+
+      if (target.classList.contains("show")) {
+        target.classList.remove("show");
+        e.target.classList.add("collapsed");
+      } else {
+        target.classList.add("show");
+        e.target.classList.remove("collapsed");
+      }
     });
   });
 }
