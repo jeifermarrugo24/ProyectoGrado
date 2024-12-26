@@ -1,4 +1,5 @@
 <?php
+
 date_default_timezone_set('America/Bogota');
 include_once dirname(__FILE__) . '/../general/lib_web_kernel.php';
 include_once dirname(__FILE__) . '/../general/lib_user_information.php';

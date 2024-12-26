@@ -1,8 +1,10 @@
 <?php
 
+
 date_default_timezone_set('America/Bogota');
 include_once dirname(__FILE__) . '/general/lib_web_kernel.php';
 include_once dirname(__FILE__) . '/btca/usuarios/route.php';
+include_once dirname(__FILE__) . '/btca/menus/route.php';
 
 if ($action == "session-start") {
     include_once dirname(__FILE__) . '/general/lib_user_information.php';

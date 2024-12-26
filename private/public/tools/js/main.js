@@ -106,6 +106,7 @@ async function iniciarEventos() {
     imagenPerfil();
     RegistrarUsuario();
     EditarUsuario();
+    IngresarNuevoMenu();
     cerrarSesionAutomaticamente();
   } else {
     sessionStart();
@@ -258,6 +259,7 @@ function consultarContenido() {
         Tables();
         validarContrasena();
         accordion();
+        CheckMenus();
         hide_spinner();
         return 2;
       },
@@ -272,7 +274,7 @@ function cerrarSesionAutomaticamente() {
     clearTimeout(timeout);
     timeout = setTimeout(() => {
       $(".traer-contenido[contenido='cerrar_session']").trigger("click");
-    }, 600000);
+    }, 1200000);
   }
 
   $(document).on("mousemove keydown click scroll", resetTimer);
@@ -283,18 +285,74 @@ function cerrarSesionAutomaticamente() {
 function accordion() {
   document.querySelectorAll(".accordion-button").forEach((button) => {
     button.addEventListener("click", (e) => {
-      const target = document.querySelector(
-        e.target.getAttribute("data-bs-target")
-      );
+      const targetSelector = button.getAttribute("data-bs-target");
+      const target = document.querySelector(targetSelector);
 
+      if (!target) return; // Verificar si el objetivo existe
+
+      const checkbox = button
+        .closest(".accordion-item")
+        .querySelector(".menu-checkbox");
+
+      // Alternar el acordeón y el checkbox
       if (target.classList.contains("show")) {
         target.classList.remove("show");
-        e.target.classList.add("collapsed");
+        button.classList.add("collapsed");
+        button.setAttribute("aria-expanded", "false");
+
+        if (checkbox) {
+          checkbox.checked = false; // Deseleccionar el checkbox
+        }
       } else {
+        // Cerrar otros acordeones
+        const accordionParent = button.closest(".accordion");
+        if (accordionParent) {
+          accordionParent
+            .querySelectorAll(".accordion-collapse.show")
+            .forEach((openItem) => {
+              openItem.classList.remove("show");
+              accordionParent
+                .querySelectorAll(".accordion-button[aria-expanded='true']")
+                .forEach((openButton) => {
+                  openButton.classList.add("collapsed");
+                  openButton.setAttribute("aria-expanded", "false");
+                });
+
+              const otherCheckbox = openItem
+                .closest(".accordion-item")
+                ?.querySelector(".menu-checkbox");
+              if (otherCheckbox) {
+                otherCheckbox.checked = false; // Deseleccionar otros checkboxes
+              }
+            });
+        }
+
+        // Abrir el acordeón actual
         target.classList.add("show");
-        e.target.classList.remove("collapsed");
+        button.classList.remove("collapsed");
+        button.setAttribute("aria-expanded", "true");
+
+        if (checkbox) {
+          checkbox.checked = true; // Seleccionar el checkbox
+        }
       }
     });
+  });
+}
+
+function CheckMenus() {
+  $('input[type="checkbox"]').change(function () {
+    if ($(this).prop("checked")) {
+      $('input[type="checkbox"]').not(this).prop("checked", false);
+
+      $("#btn-nuevo-menu").prop("disabled", false);
+      $("#btn-editar-menu").prop("disabled", false);
+    } else {
+      if ($('input[type="checkbox"]:checked').length === 0) {
+        $("#btn-nuevo-menu").prop("disabled", true);
+        $("#btn-editar-menu").prop("disabled", true);
+      }
+    }
   });
 }
 
@@ -658,6 +716,69 @@ function EditarUsuario() {
             $("#" + campo).addClass("error-input");
           }
         }
+      },
+    });
+  });
+}
+
+function IngresarNuevoMenu() {
+  $("body").on("click", "#btn-nuevo-menu", function () {
+    var checkbox_select = $('input[type="checkbox"]:checked');
+    var id_menu = checkbox_select.attr("id").split("_")[1];
+
+    const formData = new FormData();
+    formData.append("action", "modal_ingresar_menu");
+    formData.append("id_menu", id_menu);
+
+    ajax({
+      method: "POST",
+      url: internal_url_private,
+      data: formData,
+      contentType: false,
+      processData: false,
+      dataType: "json",
+      beforeSend: function () {
+        show_spinner();
+      },
+      success: function (data) {
+        let code = data.code;
+        let html = data.html;
+        SweetModal(html, 1000);
+        hide_spinner();
+      },
+    });
+  });
+
+  $("body").on("click", "#btn-editar-menu", function () {
+    console.log("editar");
+    var checkbox_select = $('input[type="checkbox"]:checked');
+    var id_menu = checkbox_select.attr("id").split("_")[1];
+
+    if (id_menu == "0") {
+      alertify.set("notifier", "position", "top-right");
+      alertify.error("Está opcion no se puede modificar", 10);
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("action", "modal_editar_menu");
+    formData.append("id_menu", id_menu);
+
+    ajax({
+      method: "POST",
+      url: internal_url_private,
+      data: formData,
+      contentType: false,
+      processData: false,
+      dataType: "json",
+      beforeSend: function () {
+        show_spinner();
+      },
+      success: function (data) {
+        let code = data.code;
+        let html = data.html;
+        SweetModal(html, 1000);
+        hide_spinner();
       },
     });
   });

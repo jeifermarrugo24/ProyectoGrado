@@ -841,6 +841,7 @@
   z-index: 1982;
   -webkit-transform: translate3d(0, 0, 0);
   transform: translate3d(0, 0, 0);
+  z-index: 999999 !important;
 }
 .alertify-notifier .ajs-message {
   position: relative;
