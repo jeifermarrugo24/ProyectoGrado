@@ -108,6 +108,7 @@ async function iniciarEventos() {
     EditarUsuario();
     IngresarNuevoMenu();
     cerrarSesionAutomaticamente();
+    MenuAcciones();
   } else {
     sessionStart();
   }
@@ -781,5 +782,77 @@ function IngresarNuevoMenu() {
         hide_spinner();
       },
     });
+  });
+}
+
+function MenuAcciones() {
+  $("body").on("click", "#enviar_accion_menu", function () {
+    let elemento = $(this);
+    let action = elemento.attr("action_realizar");
+    let id_menu = document.getElementById("id_menu").value;
+    let title = document.getElementById("title").value;
+    let parentid = document.getElementById("parentid").value;
+    let orden = document.getElementById("orden").value;
+    let icono = document.getElementById("icono").value;
+    let url = document.getElementById("url").value;
+    let estado = document.getElementById("estado").value;
+    let action_menu = document.getElementById("action").value;
+
+    if (action == "ingresar") {
+      action = "ingresar_nuevo_menu";
+    } else {
+      action = "editar_menu_seleccionado";
+    }
+
+    if (
+      check_empty_field("title") &&
+      check_empty_field("orden") &&
+      check_empty_field("estado")
+    ) {
+      const formData = new FormData();
+      formData.append("action", action);
+      formData.append("id_menu", id_menu);
+      formData.append("title", title);
+      formData.append("orden", orden);
+      formData.append("parentid", parentid);
+      formData.append("icono", icono);
+      formData.append("action_menu", action_menu);
+      formData.append("url", url);
+      formData.append("estado", estado);
+
+      ajax({
+        method: "POST",
+        url: internal_url_private,
+        data: formData,
+        contentType: false,
+        processData: false,
+        dataType: "json",
+        beforeSend: function () {
+          show_spinner();
+          elemento.prop("disabled", true);
+        },
+        success: function (data) {
+          var code = data.code;
+          var message = data.message;
+          var campo = data.campo;
+
+          if (code === "200") {
+            hide_spinner();
+            alertify.set("notifier", "position", "top-right");
+            alertify.success(message, 10);
+          } else {
+            hide_spinner();
+            alertify.set("notifier", "position", "top-right");
+            alertify.error(message, 10);
+            if (campo.length) {
+              $("#" + campo).addClass("error-input");
+            }
+          }
+        },
+      });
+    } else {
+      alertify.set("notifier", "position", "top-right");
+      alertify.error("Por favor revisé los campos ingresados", 10);
+    }
   });
 }

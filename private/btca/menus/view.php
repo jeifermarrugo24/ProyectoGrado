@@ -32,13 +32,13 @@ class HelperMenu
                 if (strlen(trim($menu_action)) < 1 && strlen(trim($menu_url)) > 0) {
                     $apertura_cabecera_enlace = "<a class='nav-link' href='$menu_url' target=''>";
                     $cerrar_cabecera_enlace = "</a>";
-                } else {
+                } else if (strlen(trim($menu_action)) != '') {
                     $apertura_cabecera_enlace = "<a class='traer-contenido submenus' contenido='$menu_action' style='cursor:pointer;'>";
                     $cerrar_cabecera_enlace = "</a>";
                 }
 
                 if (is_array($permisos) && count($permisos) > 0) {
-                    if (!empty($child_menu)) {
+                    if (!empty($child_menu) || $menu_icono != '') {
                         $html .= <<<HTML
                     <li class="nav-item">
                         <a href="#" class="nav-link" >
@@ -295,7 +295,7 @@ class viewMenu
             $menu_id = $menus_info['menu_id'];
             $menu_title = $menus_info['menu_title'];
             $menu_estado = $menus_info['menu_estado'];
-            $menu_icono = $menus_info['menu_icono'];
+            $menu_icono = trim($menus_info['menu_icono']);
             $menu_parentid = $menus_info['menu_parentid'];
             $menu_orden = $menus_info['menu_orden'];
             $menu_url = trim($menus_info['menu_url']);
@@ -307,15 +307,17 @@ class viewMenu
             $menu_title_f = '- ' . $menu_title;
             $text_accion = 'EDITAR MENU';
         } else {
-            $menu_parentid = $menus_info['menu_parentid'];
+            if ($menus_info['menu_id'] == '') {
+                $menus_info['menu_id'] = 0;
+            }
+            $menu_parentid = $menus_info['menu_id'];
             $text_accion = 'INGRESAR MENU';
         }
 
+        $padre = ModelMenus::menus_by_id($menu_parentid);
+        $menu_title_padre = $padre['menu_title'];
         if ($menu_parentid == '0') {
             $menu_title_padre = 'Menu Principal';
-        } else {
-            $padre = ModelMenus::menus_by_id($menu_parentid);
-            $menu_title_padre = $padre['menu_title'];
         }
 
         $html = <<<HTML
@@ -338,7 +340,6 @@ class viewMenu
                                                 <div class="row no-gutters">
 
                                                     <input type="hidden" id="id_menu" value = "$menu_id">
-                                                    <input type="hidden" id="accion" value = "$accion">
 
                                                     <div class="col-lg-6 col-12 mb-3 px-2">
                                                         <label for="title" class="label-input">Titulo: </label>
@@ -362,13 +363,7 @@ class viewMenu
 
                                                     <div class="col-lg-12 col-12 mb-3 px-2">
                                                         <label for="icono" class="label-input">Svg Icono (nav-link):</label>
-                                                        <textarea 
-                                                            id="icono" 
-                                                            name="icono" 
-                                                            placeholder="Ingrese Svg Icono" 
-                                                            aria-label="Svg Icono (nav-link)" 
-                                                            value="$menu_icono">
-                                                        </textarea>
+                                                        <textarea id="icono" name="icono" placeholder="Ingrese Svg Icono">$menu_icono</textarea>
                                                     </div>
 
                                                     <div class="col-lg-12 col-12 mb-3 px-2">
@@ -381,13 +376,13 @@ class viewMenu
                                                         <label for="estado" class="label-input">Estado: </label>
                                                         <select name="estado" id="estado">
                                                             <option value="">Seleccionar</option>
-                                                            <option value="1" $selected_estado_1>Activo</option>
-                                                            <option value="0" $selected_estado_0>Inactivo</option>
+                                                            <option value="A" $selected_estado_1>Activo</option>
+                                                            <option value="I" $selected_estado_0>Inactivo</option>
                                                         </select>
                                                     </div>
 
                                                     <div class="col-lg-12 col-12 px-2">
-                                                        <button type="submit" class="login-btn" id="enviar_accion_menu">$text_accion</button>
+                                                        <button type="submit" class="login-btn" action_realizar="$accion" id="enviar_accion_menu">$text_accion</button>
                                                     </div>
 
                                                 </div>

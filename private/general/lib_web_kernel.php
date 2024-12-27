@@ -8,6 +8,7 @@ include_once __DIR__ . "/generalClases.php";
 
 include_once __DIR__ . "/../btca/menus/view.php";
 include_once __DIR__ . "/../btca/usuarios/view.php";
+include_once __DIR__ . "/../btca/permisos/view.php";
 
 function getContenido($params)
 {
@@ -31,10 +32,14 @@ function getContenido($params)
     //ADMINISTRADOR DE MENUS
     if ($contenido == "accion_ingresar_menu") {
         $msj = viewMenu::ingresarNuevoMenu();
-    } else if ($contenido == "accion_consultar_usuario") {
-        $msj = ViewUsuarios::consultarUsuarios();
     }
     //FIN ADMINISTRADOR DE MENUS
+
+    //ADMINISTRADOR DE PERMISOS
+    if ($contenido == "accion_ingresar_permiso") {
+        $msj = viewPermisos::permisos_usuario();
+    }
+    //FIN ADMINISTRADOR DE PERMISOS
 
     $retorno = json_encode(
         array(
