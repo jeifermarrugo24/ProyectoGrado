@@ -8,6 +8,18 @@ class viewPermisos
         $menus = ModelMenus::menus_list2(0);
         $acordeon_item = '';
 
+        $perfiles = ModelPerfiles::perfilesList();
+        $obtion_perfiles = '';
+        if (is_array($perfiles) && count($perfiles) > 0) {
+            foreach ($perfiles as $key => $perfil) {
+                $perfil_id = $perfil['perfil_id'];
+                $perfil_nombre = $perfil['perfil_nombre'];
+                $obtion_perfiles .= <<<HTML
+                    <option value="$perfil_id">$perfil_nombre</option>
+                HTML;
+            }
+        }
+
         function renderSubmenus($parentId, $parentAccordionId)
         {
             $submenus = ModelMenus::menus_list($parentId);
@@ -43,7 +55,7 @@ class viewPermisos
                                     </div>
                                 </button>
                             </h2>
-                            <div id="flush-collapseSubmenu_$submenu_id" class="accordion-collapse collapse" data-bs-parent="#$submenu_accordion_id">
+                            <div id="flush-collapseSubmenu_$submenu_id" class="accordion-collapse collapse">
                                 <div class="accordion-body">
                                     <div class="accordion" id="accordionFlushExample_$submenu_id">
                                         $sub_submenus
@@ -116,7 +128,7 @@ class viewPermisos
                                 </div>
                             </button>
                         </h2>
-                        <div id="flush-collapse_$menu_id" class="accordion-collapse collapse" data-bs-parent="#$accordion_id">
+                        <div id="flush-collapse_$menu_id" class="accordion-collapse collapse">
                             <div class="accordion-body">
                                 <div class="accordion" id="$accordion_id">
                                     $sub_acordeon_item
@@ -167,13 +179,34 @@ class viewPermisos
                                             <div class="col-lg-12 px-2 pt-2 pb-2">
                                                 <h2><b style="font-size:17px;">MENUS</b></h2>
                                                 <hr>
+                                                <div class="col-lg-12 col-12 mb-3 px-2">
+                                                    <select name="perfil" id="perfil">
+                                                        <option value="">Seleccionar</option>
+                                                        $obtion_perfiles
+                                                    </select>
+                                                </div>
+                                                <div class="mr-2">
+                                                    <div class="form-check form-switch d-flex justify-content-end">
+                                                        <div style="margin-right: 50px;">
+                                                            <label for="">Seleccionar Todos</label>
+                                                        </div>
+                                                        <div>
+                                                            <input class="form-check-input select_all" type="checkbox" role="switch">
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
+
     
                                             <div class="accordion accordion-flush" id="accordionFlushExample">
                                             <div class="">
                                 
                                             </div>
                                                 $acordeon_item
+                                            </div>
+
+                                            <div class="col-lg-12 col-12 px-2 pt-2">
+                                                <button type="submit" class="login-btn" id="asignar_permisos">ASIGNAR PERMISOS</button>
                                             </div>
                                         </div>
                                     </div>

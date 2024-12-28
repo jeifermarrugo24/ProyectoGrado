@@ -9,6 +9,7 @@ include_once __DIR__ . "/generalClases.php";
 include_once __DIR__ . "/../btca/menus/view.php";
 include_once __DIR__ . "/../btca/usuarios/view.php";
 include_once __DIR__ . "/../btca/permisos/view.php";
+include_once __DIR__ . "/../btca/perfiles/view.php";
 
 function getContenido($params)
 {

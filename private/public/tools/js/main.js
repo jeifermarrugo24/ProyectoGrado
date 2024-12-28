@@ -109,6 +109,7 @@ async function iniciarEventos() {
     IngresarNuevoMenu();
     cerrarSesionAutomaticamente();
     MenuAcciones();
+    permisosUsuarios();
   } else {
     sessionStart();
   }
@@ -250,7 +251,12 @@ function consultarContenido() {
             location.href = destination_url;
           }
 
-          if (atr_contenido == "accion_consultar_usuario") {
+          if (atr_contenido == "accion_ingresar_menu") {
+            CheckMenus();
+          }
+
+          if (atr_contenido == "accion_ingresar_permiso") {
+            SeleccionarTodo();
           }
         } else {
           alertify.set("notifier", "position", "top-right");
@@ -260,7 +266,6 @@ function consultarContenido() {
         Tables();
         validarContrasena();
         accordion();
-        CheckMenus();
         hide_spinner();
         return 2;
       },
@@ -281,6 +286,28 @@ function cerrarSesionAutomaticamente() {
   $(document).on("mousemove keydown click scroll", resetTimer);
 
   resetTimer();
+}
+
+function SeleccionarTodo() {
+  $(".select_all").on("change", function () {
+    const isChecked = $(this).is(":checked");
+    // Seleccionar o deseleccionar todos los checkboxes dentro del contenedor
+    $('#contenedor-formulario input[type="checkbox"]').prop(
+      "checked",
+      isChecked
+    );
+  });
+
+  // Sincronizar el estado de select_all si los checkboxes individuales cambian
+  $('#contenedor-formulario input[type="checkbox"]').on("change", function () {
+    const allChecked =
+      $('#contenedor-formulario input[type="checkbox"]').not(".select_all")
+        .length ===
+      $('#contenedor-formulario input[type="checkbox"]:checked').not(
+        ".select_all"
+      ).length;
+    $(".select_all").prop("checked", allChecked);
+  });
 }
 
 function accordion() {
@@ -830,6 +857,64 @@ function MenuAcciones() {
         beforeSend: function () {
           show_spinner();
           elemento.prop("disabled", true);
+        },
+        success: function (data) {
+          var code = data.code;
+          var message = data.message;
+          var campo = data.campo;
+
+          if (code === "200") {
+            hide_spinner();
+            alertify.set("notifier", "position", "top-right");
+            alertify.success(message, 10);
+          } else {
+            hide_spinner();
+            alertify.set("notifier", "position", "top-right");
+            alertify.error(message, 10);
+            if (campo.length) {
+              $("#" + campo).addClass("error-input");
+            }
+          }
+        },
+      });
+    } else {
+      alertify.set("notifier", "position", "top-right");
+      alertify.error("Por favor revisé los campos ingresados", 10);
+    }
+  });
+}
+
+function permisosUsuarios() {
+  $("body").on("click", "#asignar_permisos", function () {
+    let perfil = document.getElementById("perfil").value;
+    let check_boxes_select = [];
+    $(".form-check-input:checked").each(function () {
+      check_boxes_select.push($(this).attr("id"));
+    });
+
+    if (check_boxes_select.length === 0) {
+      alertify.set("notifier", "position", "top-right");
+      alertify.success(
+        "Por favor selecciona por lo menos una opcion del menu",
+        10
+      );
+      return 2;
+    }
+
+    if (check_empty_field("perfil")) {
+      const formData = new FormData();
+      formData.append("action", "asignar_permisos_usuarios");
+      formData.append("perfil", perfil);
+      formData.append("checks_menus", check_boxes_select);
+      ajax({
+        method: "POST",
+        url: internal_url_private,
+        data: formData,
+        contentType: false,
+        processData: false,
+        dataType: "json",
+        beforeSend: function () {
+          show_spinner();
         },
         success: function (data) {
           var code = data.code;
