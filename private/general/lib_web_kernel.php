@@ -30,6 +30,14 @@ function getContenido($params)
     }
     //FIN ADMINISTRADOR DE USUARIOS
 
+    //ADMINISTRADOR DE PERFILES
+    if ($contenido == "accion_ingresar_perfil") {
+        $msj = ViewPerfiles::ingresarPerfiles();
+    } else if ($contenido == "accion_consultar_perfil") {
+        $msj = ViewPerfiles::consultarPerfiles();
+    }
+    //FIN ADMINISTRADOR DE USUARIOS
+
     //ADMINISTRADOR DE MENUS
     if ($contenido == "accion_ingresar_menu") {
         $msj = viewMenu::ingresarNuevoMenu();

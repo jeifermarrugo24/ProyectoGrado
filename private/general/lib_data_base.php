@@ -190,6 +190,30 @@ function actualizar($transaccion)
     return FALSE; // La conexión falló
 }
 
+function eliminar($transaccion)
+{
+    global $usuario_db, $bd, $puerto_usuario_db_web, $clave_usuario_db_web, $host_usuario_db_web;
+
+    $recurso = mysqli_connect($host_usuario_db_web, $usuario_db, $clave_usuario_db_web, $bd);
+
+    if (!$recurso) {
+        error_log("Error al conectar a la base de datos: " . mysqli_connect_error());
+        return false;
+    }
+
+    $result = mysqli_query($recurso, $transaccion);
+
+    if (!$result) {
+        error_log("Error en la consulta: " . mysqli_error($recurso));
+        mysqli_close($recurso);
+        return false;
+    }
+
+    mysqli_close($recurso);
+    return true;
+}
+
+
 
 function inicializar_query()
 {

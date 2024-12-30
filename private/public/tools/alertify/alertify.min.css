@@ -845,7 +845,7 @@
 }
 .alertify-notifier .ajs-message {
   position: relative;
-  width: 260px;
+  width: 350px;
   max-height: 0;
   padding: 0;
   opacity: 0;
@@ -868,13 +868,16 @@
   margin-top: 10px;
 }
 .alertify-notifier .ajs-message.ajs-success {
-  background: rgba(91, 189, 114, 0.95);
+  background: #5cb811;
+  background: rgba(92, 184, 17, 0.9);
 }
 .alertify-notifier .ajs-message.ajs-error {
-  background: rgba(217, 92, 92, 0.95);
+  background: #fe1a00;
+  background: rgba(254, 26, 0, 0.9);
 }
 .alertify-notifier .ajs-message.ajs-warning {
-  background: rgba(252, 248, 215, 0.95);
+  background: #fecf00;
+  background: rgba(254, 216, 0, 0.9);
 }
 .alertify-notifier .ajs-message .ajs-close {
   position: absolute;
@@ -896,7 +899,7 @@
   bottom: 10px;
 }
 .alertify-notifier.ajs-right {
-  right: 10px;
+  right: 85px;
 }
 .alertify-notifier.ajs-right .ajs-message {
   right: -320px;

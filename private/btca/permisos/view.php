@@ -3,8 +3,9 @@ include_once 'model.php';
 
 class viewPermisos
 {
-    public static function permisos_usuario()
+    public static function permisos_usuario($id_perfil = '')
     {
+
         $menus = ModelMenus::menus_list2(0);
         $acordeon_item = '';
 
@@ -180,11 +181,13 @@ class viewPermisos
                                                 <h2><b style="font-size:17px;">MENUS</b></h2>
                                                 <hr>
                                                 <div class="col-lg-12 col-12 mb-3 px-2">
+                                                    <label for="perfil">Perfil: </label>
                                                     <select name="perfil" id="perfil">
                                                         <option value="">Seleccionar</option>
                                                         $obtion_perfiles
                                                     </select>
                                                 </div>
+                                                
                                                 <div class="mr-2">
                                                     <div class="form-check form-switch d-flex justify-content-end">
                                                         <div style="margin-right: 50px;">
@@ -196,7 +199,6 @@ class viewPermisos
                                                     </div>
                                                 </div>
                                             </div>
-
     
                                             <div class="accordion accordion-flush" id="accordionFlushExample">
                                             <div class="">

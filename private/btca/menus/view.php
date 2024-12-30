@@ -38,7 +38,7 @@ class HelperMenu
                 }
 
                 if (is_array($permisos) && count($permisos) > 0) {
-                    if (!empty($child_menu) || $menu_icono != '') {
+                    if ((!empty($child_menu) || $menu_icono != '') && $menu_url == '') {
                         $html .= <<<HTML
                     <li class="nav-item">
                         <a href="#" class="nav-link" >

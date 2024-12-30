@@ -110,6 +110,7 @@ async function iniciarEventos() {
     cerrarSesionAutomaticamente();
     MenuAcciones();
     permisosUsuarios();
+    ManejadorPerfiles();
   } else {
     sessionStart();
   }
@@ -257,6 +258,7 @@ function consultarContenido() {
 
           if (atr_contenido == "accion_ingresar_permiso") {
             SeleccionarTodo();
+            PermisosByPerfil();
           }
         } else {
           alertify.set("notifier", "position", "top-right");
@@ -894,14 +896,14 @@ function permisosUsuarios() {
 
     if (check_boxes_select.length === 0) {
       alertify.set("notifier", "position", "top-right");
-      alertify.success(
+      alertify.warning(
         "Por favor selecciona por lo menos una opcion del menu",
         10
       );
       return 2;
     }
 
-    if (check_empty_field("perfil")) {
+    if (check_empty_field("perfil") && check_empty_field("estado")) {
       const formData = new FormData();
       formData.append("action", "asignar_permisos_usuarios");
       formData.append("perfil", perfil);
@@ -939,5 +941,143 @@ function permisosUsuarios() {
       alertify.set("notifier", "position", "top-right");
       alertify.error("Por favor revisé los campos ingresados", 10);
     }
+  });
+}
+
+function PermisosByPerfil() {
+  $("body").on("change", "#perfil", function () {
+    let elemento = $(this);
+    let id_perfil = document.getElementById("perfil").value;
+
+    const formData = new FormData();
+    formData.append("action", "obtener_permisos_by_perfiles");
+    formData.append("perfil", id_perfil);
+
+    ajax({
+      method: "POST",
+      url: internal_url_private,
+      data: formData,
+      contentType: false,
+      processData: false,
+      dataType: "json",
+      beforeSend: function () {
+        show_spinner();
+        SeleccionarTodo();
+      },
+      success: function (data) {
+        hide_spinner();
+
+        var code = data.code;
+        var message = data.message;
+
+        if (code === "200") {
+          alertify.set("notifier", "position", "top-right");
+          alertify.success(message, 10);
+
+          let permisos = data.permisos;
+
+          if (Array.isArray(permisos)) {
+            $(".form-check-input").prop("checked", false);
+
+            permisos.forEach(function (permiso) {
+              let menuId = permiso.permiso_menu_id;
+              $("#check_" + menuId).prop("checked", true);
+            });
+          }
+        } else {
+          $(".form-check-input").prop("checked", false);
+          alertify.set("notifier", "position", "top-right");
+          alertify.warning(message, 10);
+        }
+      },
+      error: function () {
+        hide_spinner();
+        alertify.set("notifier", "position", "top-right");
+        alertify.error("Error en la solicitud", 10);
+      },
+    });
+  });
+}
+
+function ManejadorPerfiles() {
+  $("body").on("click", "#ingresar_perfil", function () {
+    var id_contenedor = "#contenedor-formulario";
+    var elemento = $(this);
+    var contenedor = $(id_contenedor);
+    var variables = obtener_variables(id_contenedor);
+    if (
+      check_empty_field("nombre_perfil") &&
+      check_empty_field("estado_perfil")
+    ) {
+      const formData = new FormData();
+      formData.append("action", "ingresar_perfil_usuario");
+      variables[0]
+        .substring(1)
+        .split("&")
+        .filter((pair) => pair && !pair.startsWith("undefined"))
+        .forEach((pair) => {
+          const [key, value] = pair.split("=");
+          if (key && value) {
+            formData.append(key, decodeURIComponent(value));
+          }
+        });
+      ajax({
+        method: "POST",
+        url: internal_url_private,
+        data: formData,
+        contentType: false,
+        processData: false,
+        dataType: "json",
+        beforeSend: function () {
+          show_spinner();
+          elemento.prop("disabled", true);
+        },
+        success: function (data) {
+          var code = data.code;
+          var message = data.message;
+          var campo = data.campo;
+
+          if (code === "200") {
+            hide_spinner();
+            alertify.set("notifier", "position", "top-right");
+            alertify.success(message, 10);
+          } else {
+            hide_spinner();
+            alertify.set("notifier", "position", "top-right");
+            alertify.error(message, 10);
+            if (campo.length) {
+              $("#" + campo).addClass("error-input");
+            }
+          }
+        },
+      });
+    } else {
+      alertify.set("notifier", "position", "top-right");
+      alertify.error("Por favor revisé los campos ingresados", 10);
+    }
+  });
+}
+
+function ModalEditarPerfil(id_perfil) {
+  const formData = new FormData();
+  formData.append("action", "modal_editar_perfil");
+  formData.append("id_perfil", id_perfil);
+
+  ajax({
+    method: "POST",
+    url: internal_url_private,
+    data: formData,
+    contentType: false,
+    processData: false,
+    dataType: "json",
+    beforeSend: function () {
+      show_spinner();
+    },
+    success: function (data) {
+      let code = data.code;
+      let html = data.html;
+      SweetModal(html, 1000);
+      hide_spinner();
+    },
   });
 }
