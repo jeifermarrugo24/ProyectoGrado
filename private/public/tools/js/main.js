@@ -1056,6 +1056,59 @@ function ManejadorPerfiles() {
       alertify.error("Por favor revisé los campos ingresados", 10);
     }
   });
+
+  $("body").on("click", "#editar_perfil", function () {
+    var id_contenedor = "#contenedor-formulario-edit";
+    var elemento = $(this);
+    var contenedor = $(id_contenedor);
+    var variables = obtener_variables(id_contenedor);
+    var id_select = document.getElementById("perfil_id").value;
+
+    const formData = new FormData();
+    formData.append("action", "editar_perfil");
+    variables[0]
+      .substring(1)
+      .split("&")
+      .filter((pair) => pair && !pair.startsWith("undefined"))
+      .forEach((pair) => {
+        const [key, value] = pair.split("=");
+        if (key && value) {
+          formData.append(key, decodeURIComponent(value));
+        }
+      });
+    formData.append("perfil_id", id_select);
+
+    ajax({
+      method: "POST",
+      url: internal_url_private,
+      data: formData,
+      contentType: false,
+      processData: false,
+      dataType: "json",
+      beforeSend: function () {
+        show_spinner();
+        elemento.prop("disabled", true);
+      },
+      success: function (data) {
+        var code = data.code;
+        var message = data.message;
+        var campo = data.campo;
+
+        if (code === "200") {
+          hide_spinner();
+          alertify.set("notifier", "position", "top-right");
+          alertify.success(message, 10);
+        } else {
+          hide_spinner();
+          alertify.set("notifier", "position", "top-right");
+          alertify.error(message, 10);
+          if (campo.length) {
+            $("#" + campo).addClass("error-input");
+          }
+        }
+      },
+    });
+  });
 }
 
 function ModalEditarPerfil(id_perfil) {

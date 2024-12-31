@@ -23,3 +23,14 @@ if ($action == 'modal_editar_perfil') {
     }
     $result = json_encode($res);
 }
+
+if ($action == 'editar_perfil') {
+    $data = $_POST;
+    $res = ModelPerfiles::editar_perfil($data);
+    if ($res) {
+        $res = array('code' => '200', 'message' => 'Perfil editado correctamente');
+    } else {
+        $res = array('code' => '501', 'message' => 'No se pudó editar el perfil.');
+    }
+    $result = json_encode($res);
+}
