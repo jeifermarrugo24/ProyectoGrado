@@ -84,34 +84,37 @@ class viewAutores
                 <div class="row no-gutters justify-content-center">
                     <div class="pt-4 col-lg-12">
                         <h1 class="pr-3 text-left"><b style="font-size:20px; text-transform:uppercase;">Listado De Autores</b></h1>
-
-                            <div class="col-12 col-lg-3 m-auto">
-                                <div class="container">
-                                    <div class="card">
-                                    <figure class="card__thumb">
-                                        <img
-                                        src="https://images.unsplash.com/photo-1573865526739-10659fec78a5?q=80&w=2030&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                                        alt="Picture by Amber Kipp"
-                                        class="card__image"
-                                        />
-                                        <figcaption class="card__caption">
-                                        <h2 class="card__title">
-                                            Here's What Your Cat Actually Thinks Of You
-                                        </h2>
-                                        <p class="card__snippet">
-                                            In ac sem bibendum, posuere leo et, accumsan dolor. Sed lacinia
-                                            aliquet tellus. Aliquam pellentesque vel diam sit amet euismod.
-                                            Donec et sem et mi placerat malesuada. Nullam at pharetra elit.
-                                            Class aptent taciti sociosqu ad litora torquent per conubia nostra,
-                                            per inceptos himenaeos. Maecenas fringilla at justo sit amet tempus.
-                                            Interdum et malesuada fames ac ante ipsum primis in faucibus.
-                                        </p>
-                                        <a href="" class="card__button">Read more</a>
-                                        </figcaption>
-                                    </figure>
+                            <div class="row">
+                                <div class="col-12 col-lg-2 my-2">
+                                    <div class="contenedor_card">
+                                        <div class="card_profile p-4" id="profileCard">
+                                            <img class="img_profile" src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Profile Picture" class="noSelect">
+                                            <h2 class="title-login noSelect" style="color:black; padding-bottom:0;">John Doe</h2>
+                                            <div class="d-flex justify-content-end">
+                                                <button class="login-btn" style="border-radius:25px;">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-pencil m-2" viewBox="0 0 16 16">
+                                                        <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        <div>
                                     </div>
-                                    
-                                    <p class="copyright">Picture by Amber Kipp</p>
+    
+                                    <div class="" id="infoBox">
+                                        <h2 class="title-login noSelect">About Me</h2>
+                                        <p id = "p">Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero, quibusdam delectus? Officia optio eveniet molestias explicabo culpa quos delectus ratione laudantium. Laborum obcaecati totam quasi animi illum veritatis laboriosam veniam?
+                                            Quis impedit eveniet, asperiores atque neque debitis aliquid quisquam, odit itaque reprehenderit quidem! Exercitationem aperiam dolore laborum aliquam, vitae incidunt animi mollitia amet. Impedit, qui! Provident, dicta molestiae. Exercitationem, voluptates.</p>
+    
+                                        <div class="pills">
+                                            <span class="pill">JavaScript</span>
+                                            <span class="pill">Python</span>
+                                            <span class="pill">Java</span>
+                                            <span class="pill">C#</span>
+                                            <span class="pill">HTML</span>
+                                            <span class="pill">CSS</span>
+                                            <span class="pill">SQL</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             

@@ -260,6 +260,10 @@ function consultarContenido() {
             SeleccionarTodo();
             PermisosByPerfil();
           }
+
+          if (atr_contenido == "accion_consultar_autores") {
+            ProfileCard();
+          }
         } else {
           alertify.set("notifier", "position", "top-right");
           alertify.error(message, 10);
@@ -1213,5 +1217,15 @@ function RegistrarUsuario() {
       alertify.set("notifier", "position", "top-right");
       alertify.error("Por favor revisé los campos ingresados", 10);
     }
+  });
+}
+
+function ProfileCard() {
+  const profileCard = document.getElementById("profileCard");
+  const infoBox = document.getElementById("infoBox");
+
+  profileCard.addEventListener("click", () => {
+    profileCard.classList.toggle("active");
+    infoBox.classList.toggle("active");
   });
 }

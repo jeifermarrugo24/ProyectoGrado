@@ -327,148 +327,165 @@ label[for="upload"] input {
 }
 
 .u-clearfix {
-  *zoom: 1;
+  zoom: 1;
 }
 
-.container {
+.contenedor_card {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 20px;
+}
+
+.card_profile {
+  position: relative; /* Make the card relative for the pseudo-element */
+  width: 235px;
+  height: 280px;
+  background-color: #fff;
+  color: white;
+  display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 100%;
-  margin: 20px 0 80px;
-}
-
-.card {
-  width: 300px;
-  margin: 10px;
-  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.5);
+  align-items: center;
+  border-radius: 15px;
+  padding: 5px;
+  padding-top: 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   cursor: pointer;
-
-  &:hover {
-    .card__caption {
-      top: 50%;
-      transform: translateY(-50%);
-    }
-
-    .card__image {
-      transform: translateY(-10px);
-    }
-
-    .card__thumb {
-      &::after {
-        top: 0;
-      }
-    }
-
-    .card__snippet {
-      margin: 20px 0;
-    }
-  }
-
-  &__thumb {
-    position: relative;
-    max-height: 400px;
-    overflow: hidden;
-
-    @include breakpoint(desktop) {
-      max-height: 500px;
-    }
-
-    &::after {
-      position: absolute;
-      top: 0;
-      display: block;
-      content: "";
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(
-        0deg,
-        rgba(0, 0, 0, 0.5) 40%,
-        rgba(255, 255, 255, 0) 100%
-      );
-      transition: 0.3s;
-
-      @include breakpoint(desktop) {
-        top: calc(100% - 140px);
-      }
-    }
-  }
-
-  &__image {
-    height: 510px;
-    transition: 0.5s ease-in-out;
-  }
-
-  &__caption {
-    position: absolute;
-    top: 50%;
-    z-index: 1;
-    padding: 0 20px;
-    color: white;
-    transform: translateY(-50%);
-    text-align: center;
-    transition: 0.3s;
-
-    @include breakpoint(desktop) {
-      top: calc(100% - 110px);
-      transform: unset;
-    }
-  }
-
-  &__title {
-    display: -webkit-box;
-    max-height: 85px;
-    overflow: hidden;
-    font-family: "Playfair Display", serif;
-    font-size: 23px;
-    line-height: 28px;
-    text-shadow: 0px 1px 5px black;
-    text-overflow: ellipsis;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-  }
-
-  &__snippet {
-    display: -webkit-box;
-    max-height: 150px;
-    margin: 20px 0;
-    overflow: hidden;
-    font-family: "Helvetica", sans-serif;
-    font-size: 14px;
-    font-weight: 300;
-    line-height: 20px;
-    text-overflow: ellipsis;
-    transition: 0.5s ease-in-out;
-    -webkit-line-clamp: 5;
-    -webkit-box-orient: vertical;
-
-    @include breakpoint(desktop) {
-      margin: 60px 0;
-    }
-  }
-
-  &__button {
-    display: inline-block;
-    padding: 10px 20px;
-    color: white;
-    border: 1px solid white;
-    border-radius: 18px;
-    font-family: "Helvetica", sans-serif;
-    font-size: 12px;
-    text-decoration: none;
-    transition: 0.3s;
-
-    &:hover {
-      color: black;
-      background-color: white;
-    }
-  }
+  transition: transform 0.3s, box-shadow 0.3s ease, background-color 0.3s ease;
 }
 
-.copyright {
-  font-family: "Helvetica", sans-serif;
-  font-size: 12px;
-  color: #b8b8b8;
+.card_profile::before {
+  content: "";
+  position: absolute;
+  top: 10px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  border-radius: 25px;
+  background: #2d2d2d;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* Card active state */
+.card_profile.active::before {
+  opacity: 1;
+}
+
+.card_profile.active {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  background-color: #f0f0f5;
+}
+
+.img_profile {
+  width: 165px;
+  height: 165px;
+  border-radius: 15%;
+  margin-top: 25px;
+}
+
+.h2_profile {
+  margin: 10px 0;
+  background: linear-gradient(45deg, #ff6ec4, #7873f5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: color 0.3s ease;
+}
+
+/* Change h2 color to white when the card is active */
+.card_profile.active .title-login {
+  color: white; /* Change text color to white */
+  -webkit-background-clip: none; /* Remove background clip for gradient */
+  -webkit-text-fill-color: white; /* Ensure text is white */
+}
+
+.social-icons {
+  display: flex;
+  justify-content: space-between;
+  width: 120px;
+}
+
+.social-icons a {
+  color: #cdcdcd;
+  font-size: 24px;
+  transition: transform 0.3s ease, color 0.3s ease; /* Smooth transition */
+}
+
+/* Change social icons color to white when the card is active */
+.card_profile.active .social-icons a {
+  color: #fff;
+  transition: transform 0.3s ease, color 0.3s ease; /* Smooth transition */
+}
+
+.social-icons a:hover {
+  color: #666; /* Change hover color to a darker gray */
+  transform: scale(1.2);
+}
+
+#infoBox {
+  width: 400px;
+  height: auto;
+  padding: 20px;
+  background-color: white;
+  border: 2px solid #2d2d2d;
+  color: #2d2d2d;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: none;
+  transform: translateX(-50px) scale(0.8);
+  transition: opacity 0.5s ease, transform 0.6s ease, box-shadow 0.4s ease;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+#infoBox.active {
+  display: flex;
+  display: block;
+  position: absolute;
+  transform: translateX(0) scale(1);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  top: -8px;
+  left: 255px;
+  z-index: 1;
+}
+
+#p {
+  line-height: 1.5;
+}
+
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.pill {
+  background-color: #4a4a4a;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+  cursor: default;
+}
+
+.pill:hover {
+  background-color: #6c757d; /* Darker gray on hover */
+}
+
+.noSelect {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.noSelect:focus {
+  outline: none !important;
 }
