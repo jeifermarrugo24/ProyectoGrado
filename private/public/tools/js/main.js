@@ -1134,3 +1134,84 @@ function ModalEditarPerfil(id_perfil) {
     },
   });
 }
+
+function RegistrarUsuario() {
+  $("body").on("click", "#ingresar_autor", function () {
+    var id_contenedor = "#contenedor-formulario";
+    var elemento = $(this);
+    var contenedor = $(id_contenedor);
+    var variables = obtener_variables(id_contenedor);
+
+    if (
+      check_empty_field("nombre_autor") &&
+      check_empty_field("apellido_autor") &&
+      check_empty_field("descripcion_autor") &&
+      check_empty_field("estado")
+    ) {
+      const fileInput = document.getElementById("upload");
+      const file = fileInput.files[0];
+
+      const maxFileSize = 5 * 1024 * 1024;
+      if (file.size > maxFileSize) {
+        alertify.set("notifier", "position", "top-right");
+        alertify.error("El tamaño de la imagen no debe exceder los 5 MB", 10);
+        return;
+      }
+
+      const validFileTypes = ["image/jpeg", "image/png", "image/gif"];
+      if (!validFileTypes.includes(file.type)) {
+        alertify.set("notifier", "position", "top-right");
+        alertify.error("Solo se permiten imágenes JPG, PNG o GIF", 10);
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("action", "ingresar_autor");
+      variables[0]
+        .substring(1)
+        .split("&")
+        .filter((pair) => pair && !pair.startsWith("undefined"))
+        .forEach((pair) => {
+          const [key, value] = pair.split("=");
+          if (key && value) {
+            formData.append(key, decodeURIComponent(value));
+          }
+        });
+      formData.append("file", file);
+
+      ajax({
+        method: "POST",
+        url: internal_url_private,
+        data: formData,
+        contentType: false,
+        processData: false,
+        dataType: "json",
+        beforeSend: function () {
+          show_spinner();
+          elemento.prop("disabled", true);
+        },
+        success: function (data) {
+          var code = data.code;
+          var message = data.message;
+          var campo = data.campo;
+
+          if (code === "200") {
+            hide_spinner();
+            alertify.set("notifier", "position", "top-right");
+            alertify.success(message, 10);
+          } else {
+            hide_spinner();
+            alertify.set("notifier", "position", "top-right");
+            alertify.error(message, 10);
+            if (campo.length) {
+              $("#" + campo).addClass("error-input");
+            }
+          }
+        },
+      });
+    } else {
+      alertify.set("notifier", "position", "top-right");
+      alertify.error("Por favor revisé los campos ingresados", 10);
+    }
+  });
+}

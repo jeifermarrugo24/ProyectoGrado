@@ -358,7 +358,7 @@ class viewMenu
                                                     
                                                     <div class="col-lg-6 col-12 mb-3 px-2">
                                                         <label for="action" class="label-input">Action: </label>
-                                                        <input type="text" placeholder="Ingrese accion" name="action" id="action" value=" $menu_action "/>
+                                                        <input type="text" placeholder="Ingrese accion" name="action" id="action" value="$menu_action"/>
                                                     </div>
 
                                                     <div class="col-lg-12 col-12 mb-3 px-2">

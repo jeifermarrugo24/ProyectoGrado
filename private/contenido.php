@@ -7,6 +7,7 @@ include_once dirname(__FILE__) . '/btca/usuarios/route.php';
 include_once dirname(__FILE__) . '/btca/menus/route.php';
 include_once dirname(__FILE__) . '/btca/permisos/route.php';
 include_once dirname(__FILE__) . '/btca/perfiles/route.php';
+include_once dirname(__FILE__) . '/btca/autores/route.php';
 
 if ($action == "session-start") {
     include_once dirname(__FILE__) . '/general/lib_user_information.php';

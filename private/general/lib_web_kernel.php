@@ -10,6 +10,7 @@ include_once __DIR__ . "/../btca/menus/view.php";
 include_once __DIR__ . "/../btca/usuarios/view.php";
 include_once __DIR__ . "/../btca/permisos/view.php";
 include_once __DIR__ . "/../btca/perfiles/view.php";
+include_once __DIR__ . "/../btca/autores/view.php";
 
 function getContenido($params)
 {
@@ -49,6 +50,16 @@ function getContenido($params)
         $msj = viewPermisos::permisos_usuario();
     }
     //FIN ADMINISTRADOR DE PERMISOS
+
+    //ADMINISTRADOR DE AUTORES
+    if ($contenido == "accion_ingresar_autor") {
+        $msj = viewAutores::ingresarAutor();
+    } else if ($contenido == 'accion_consultar_autores') {
+        $msj = viewAutores::consultarAutor();
+    }
+
+    //FIN ADMINISTRADOR DE AUTORES
+
 
     $retorno = json_encode(
         array(
