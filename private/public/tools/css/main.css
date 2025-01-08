@@ -376,7 +376,19 @@ label[for="upload"] input {
 .card_profile.active {
   transform: scale(1.05);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-  background-color: #f0f0f5;
+  background-color: #2d2d2d;
+  transition: opacity 0.3s ease;
+}
+
+.card_profile.active #btn_active {
+  background-color: white;
+  color: #2d2d2d;
+}
+
+.card_profile.active #btn_active:hover {
+  border: none;
+  background-color: white;
+  color: #2d2d2d;
 }
 
 .img_profile {
@@ -399,6 +411,14 @@ label[for="upload"] input {
   color: white; /* Change text color to white */
   -webkit-background-clip: none; /* Remove background clip for gradient */
   -webkit-text-fill-color: white; /* Ensure text is white */
+}
+
+.card_profile.active .title-card {
+  color: black; /* Change text color to white */
+  -webkit-background-clip: none; /* Remove background clip for gradient */
+  -webkit-text-fill-color: black; /* Ensure text is white */
+  text-align: center;
+  padding-bottom: 8px;
 }
 
 .social-icons {

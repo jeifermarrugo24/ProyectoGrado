@@ -79,6 +79,9 @@ class viewAutores
 
     public static function consultarAutor()
     {
+
+        $autores = ModelAutores::autores_list();
+
         $html = <<<HTML
             <div class="flex-grow-1 px-4">
                 <div class="row no-gutters justify-content-center">
@@ -91,7 +94,7 @@ class viewAutores
                                             <img class="img_profile" src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Profile Picture" class="noSelect">
                                             <h2 class="title-login noSelect" style="color:black; padding-bottom:0;">John Doe</h2>
                                             <div class="d-flex justify-content-end">
-                                                <button class="login-btn" style="border-radius:25px;">
+                                                <button class="login-btn" id="btn_active" style="border-radius:25px;">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-pencil m-2" viewBox="0 0 16 16">
                                                         <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
                                                     </svg>
@@ -101,7 +104,7 @@ class viewAutores
                                     </div>
     
                                     <div class="" id="infoBox">
-                                        <h2 class="title-login noSelect">About Me</h2>
+                                        <h2 class="title-card noSelect">About Me</h2>
                                         <p id = "p">Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero, quibusdam delectus? Officia optio eveniet molestias explicabo culpa quos delectus ratione laudantium. Laborum obcaecati totam quasi animi illum veritatis laboriosam veniam?
                                             Quis impedit eveniet, asperiores atque neque debitis aliquid quisquam, odit itaque reprehenderit quidem! Exercitationem aperiam dolore laborum aliquam, vitae incidunt animi mollitia amet. Impedit, qui! Provident, dicta molestiae. Exercitationem, voluptates.</p>
     

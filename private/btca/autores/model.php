@@ -2,6 +2,10 @@
 
 class ModelAutores
 {
+    public static function autores_list()
+    {
+        $sql = "SELECT * FROM autores";
+    }
     public static function ingresar_autor($data)
     {
         $nombre_autor = $data['nombre_autor'];
