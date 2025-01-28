@@ -11,6 +11,7 @@ include_once __DIR__ . "/../btca/usuarios/view.php";
 include_once __DIR__ . "/../btca/permisos/view.php";
 include_once __DIR__ . "/../btca/perfiles/view.php";
 include_once __DIR__ . "/../btca/autores/view.php";
+include_once __DIR__ . "/../btca/categorias/view.php";
 
 function getContenido($params)
 {
@@ -37,7 +38,7 @@ function getContenido($params)
     } else if ($contenido == "accion_consultar_perfil") {
         $msj = ViewPerfiles::consultarPerfiles();
     }
-    //FIN ADMINISTRADOR DE USUARIOS
+    //FIN ADMINISTRADOR DE PERFILES
 
     //ADMINISTRADOR DE MENUS
     if ($contenido == "accion_ingresar_menu") {
@@ -57,8 +58,15 @@ function getContenido($params)
     } else if ($contenido == 'accion_consultar_autores') {
         $msj = viewAutores::consultarAutor();
     }
-
     //FIN ADMINISTRADOR DE AUTORES
+
+    //ADMINISTRADOR DE CATEGORIAS
+    if ($contenido == "config-categoria-ingresar") {
+        $msj = viewCategorias::ingresarCategoria();
+    } else if ($contenido == 'config-categoria-consultar') {
+        $msj = viewCategorias::consultarCategoria();
+    }
+    //FIN ADMINISTRADOR DE CATEGORIAS
 
 
     $retorno = json_encode(
