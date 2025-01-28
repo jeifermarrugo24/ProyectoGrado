@@ -111,6 +111,7 @@ async function iniciarEventos() {
     MenuAcciones();
     permisosUsuarios();
     ManejadorPerfiles();
+    ManejadorAutores();
   } else {
     sessionStart();
   }
@@ -260,10 +261,6 @@ function consultarContenido() {
             SeleccionarTodo();
             PermisosByPerfil();
           }
-
-          if (atr_contenido == "accion_consultar_autores") {
-            ProfileCard();
-          }
         } else {
           alertify.set("notifier", "position", "top-right");
           alertify.error(message, 10);
@@ -273,6 +270,7 @@ function consultarContenido() {
         validarContrasena();
         accordion();
         hide_spinner();
+        VerMas();
         return 2;
       },
     });
@@ -676,10 +674,10 @@ function RegistrarUsuario() {
   });
 }
 
-function ModalEditarUser(id) {
+function ModalEditar(id, action) {
   const formData = new FormData();
-  formData.append("action", "modal_editar_usuario");
-  formData.append("id_usuario", id);
+  formData.append("action", action);
+  formData.append("id", id);
 
   ajax({
     method: "POST",
@@ -1115,31 +1113,7 @@ function ManejadorPerfiles() {
   });
 }
 
-function ModalEditarPerfil(id_perfil) {
-  const formData = new FormData();
-  formData.append("action", "modal_editar_perfil");
-  formData.append("id_perfil", id_perfil);
-
-  ajax({
-    method: "POST",
-    url: internal_url_private,
-    data: formData,
-    contentType: false,
-    processData: false,
-    dataType: "json",
-    beforeSend: function () {
-      show_spinner();
-    },
-    success: function (data) {
-      let code = data.code;
-      let html = data.html;
-      SweetModal(html, 1000);
-      hide_spinner();
-    },
-  });
-}
-
-function RegistrarUsuario() {
+function ManejadorAutores() {
   $("body").on("click", "#ingresar_autor", function () {
     var id_contenedor = "#contenedor-formulario";
     var elemento = $(this);
@@ -1218,14 +1192,84 @@ function RegistrarUsuario() {
       alertify.error("Por favor revisé los campos ingresados", 10);
     }
   });
+
+  $("body").on("click", "#editar_autor", function () {
+    var id_contenedor = "#contenedor-formulario";
+    var elemento = $(this);
+    var contenedor = $(id_contenedor);
+    var variables = obtener_variables(id_contenedor);
+    var id_select = document.getElementById("autor_id").value;
+
+    if (
+      check_empty_field("nombre_autor") &&
+      check_empty_field("apellido_autor") &&
+      check_empty_field("descripcion_autor") &&
+      check_empty_field("estado")
+    ) {
+      const formData = new FormData();
+      formData.append("action", "editar_autor");
+      variables[0]
+        .substring(1)
+        .split("&")
+        .filter((pair) => pair && !pair.startsWith("undefined"))
+        .forEach((pair) => {
+          const [key, value] = pair.split("=");
+          if (key && value) {
+            formData.append(key, decodeURIComponent(value));
+          }
+        });
+      formData.append("id_autor", id_select);
+
+      ajax({
+        method: "POST",
+        url: internal_url_private,
+        data: formData,
+        contentType: false,
+        processData: false,
+        dataType: "json",
+        beforeSend: function () {
+          show_spinner();
+          elemento.prop("disabled", true);
+        },
+        success: function (data) {
+          var code = data.code;
+          var message = data.message;
+          var campo = data.campo;
+
+          if (code === "200") {
+            hide_spinner();
+            alertify.set("notifier", "position", "top-right");
+            alertify.success(message, 10);
+          } else {
+            hide_spinner();
+            alertify.set("notifier", "position", "top-right");
+            alertify.error(message, 10);
+            if (campo.length) {
+              $("#" + campo).addClass("error-input");
+            }
+          }
+        },
+      });
+    } else {
+      alertify.set("notifier", "position", "top-right");
+      alertify.error("Por favor revisé los campos ingresados", 10);
+    }
+  });
 }
 
-function ProfileCard() {
-  const profileCard = document.getElementById("profileCard");
-  const infoBox = document.getElementById("infoBox");
+function VerMas() {
+  const seeMoreLinks = document.querySelectorAll(".see-more");
 
-  profileCard.addEventListener("click", () => {
-    profileCard.classList.toggle("active");
-    infoBox.classList.toggle("active");
+  seeMoreLinks.forEach((link) => {
+    link.addEventListener("click", function () {
+      const moreText = this.previousElementSibling; // El <span> con texto oculto
+      if (moreText.style.display === "none" || !moreText.style.display) {
+        moreText.style.display = "inline";
+        this.textContent = "Ver menos";
+      } else {
+        moreText.style.display = "none";
+        this.textContent = "Ver mas";
+      }
+    });
   });
 }

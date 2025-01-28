@@ -25,7 +25,7 @@ body {
 }
 
 main {
-  background: #f6f6f6;
+  background: #f4f6f9;
   width: min(700px, 95%);
   border-radius: 20px;
 }
@@ -330,182 +330,100 @@ label[for="upload"] input {
   zoom: 1;
 }
 
-.contenedor_card {
+#card {
   display: flex;
   align-items: center;
-  gap: 20px;
-}
-
-.card_profile {
-  position: relative; /* Make the card relative for the pseudo-element */
-  width: 235px;
-  height: 280px;
-  background-color: #fff;
-  color: white;
-  display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border-radius: 15px;
-  padding: 5px;
-  padding-top: 0;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-  transition: transform 0.3s, box-shadow 0.3s ease, background-color 0.3s ease;
-}
-
-.card_profile::before {
-  content: "";
-  position: absolute;
-  top: 10px;
-  left: 0px;
-  right: 0px;
-  bottom: 0px;
-  border-radius: 25px;
-  background: #2d2d2d;
-  z-index: -1;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-/* Card active state */
-.card_profile.active::before {
-  opacity: 1;
-}
-
-.card_profile.active {
-  transform: scale(1.05);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-  background-color: #2d2d2d;
-  transition: opacity 0.3s ease;
-}
-
-.card_profile.active #btn_active {
-  background-color: white;
-  color: #2d2d2d;
-}
-
-.card_profile.active #btn_active:hover {
-  border: none;
-  background-color: white;
-  color: #2d2d2d;
-}
-
-.img_profile {
-  width: 165px;
-  height: 165px;
-  border-radius: 15%;
-  margin-top: 25px;
-}
-
-.h2_profile {
-  margin: 10px 0;
-  background: linear-gradient(45deg, #ff6ec4, #7873f5);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  transition: color 0.3s ease;
-}
-
-/* Change h2 color to white when the card is active */
-.card_profile.active .title-login {
-  color: white; /* Change text color to white */
-  -webkit-background-clip: none; /* Remove background clip for gradient */
-  -webkit-text-fill-color: white; /* Ensure text is white */
-}
-
-.card_profile.active .title-card {
-  color: black; /* Change text color to white */
-  -webkit-background-clip: none; /* Remove background clip for gradient */
-  -webkit-text-fill-color: black; /* Ensure text is white */
-  text-align: center;
-  padding-bottom: 8px;
-}
-
-.social-icons {
-  display: flex;
-  justify-content: space-between;
-  width: 120px;
-}
-
-.social-icons a {
-  color: #cdcdcd;
-  font-size: 24px;
-  transition: transform 0.3s ease, color 0.3s ease; /* Smooth transition */
-}
-
-/* Change social icons color to white when the card is active */
-.card_profile.active .social-icons a {
-  color: #fff;
-  transition: transform 0.3s ease, color 0.3s ease; /* Smooth transition */
-}
-
-.social-icons a:hover {
-  color: #666; /* Change hover color to a darker gray */
-  transform: scale(1.2);
-}
-
-#infoBox {
-  width: 400px;
-  height: auto;
-  padding: 20px;
-  background-color: white;
-  border: 2px solid #2d2d2d;
-  color: #2d2d2d;
-  border-radius: 15px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  display: none;
-  transform: translateX(-50px) scale(0.8);
-  transition: opacity 0.5s ease, transform 0.6s ease, box-shadow 0.4s ease;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-#infoBox.active {
-  display: flex;
-  display: block;
-  position: absolute;
-  transform: translateX(0) scale(1);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-  top: -8px;
-  left: 255px;
-  z-index: 1;
-}
-
-#p {
-  line-height: 1.5;
-}
-
-.pills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 15px;
-}
-
-.pill {
-  background-color: #4a4a4a;
-  color: white;
-  padding: 8px 12px;
-  border-radius: 20px;
-  font-size: 14px;
-  transition: background-color 0.3s ease;
+  gap: 8px;
+  width: fit-content;
+  border-radius: 16px;
+  overflow: hidden;
   cursor: default;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+  transform: 0.3s all ease-in-out;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
-.pill:hover {
-  background-color: #6c757d; /* Darker gray on hover */
+#card img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 3px solid white;
 }
 
-.noSelect {
-  -webkit-tap-highlight-color: transparent;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+#card .profile-container {
+  background-color: #343a40;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 40px;
+  transition: 0.3s all ease-in-out;
 }
 
-.noSelect:focus {
-  outline: none !important;
+#card .profile-info {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0px 16px;
+}
+
+#card .profile-info h1 {
+  font-size: 2rem;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+#card .profile-info .job-title {
+  color: rgba(0, 0, 0, 0.5);
+  font-weight: 700;
+}
+
+.card .profile-info .desc {
+  color: rgba(0, 0, 0, 0.9);
+  font-size: 0.9rem;
+  max-width: 300px;
+}
+
+#card .profile-social {
+  display: flex;
+  gap: 8px;
+}
+
+#card .profile-social a {
+  width: 50px;
+  height: 40px;
+  border-radius: 10px;
+  background-color: #343a40;
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.9rem;
+  align-content: center;
+}
+
+#card .profile-social a:hover {
+  text-decoration: underline;
+  background: #000000;
+}
+
+.card-bottom {
+  width: 100%;
+  background-color: #343a40;
+  height: 5px;
+  transition: 0.3s all ease-in-out;
+  margin: 0;
+  margin-left: 2px;
+  margin-right: 2px;
+}
+
+#card:hover .card-bottom {
+  background-color: #000000;
+}
+
+#card:hover .profile-container {
+  background-color: #000000;
 }
