@@ -188,7 +188,7 @@ $html_menu = HelperMenu::getMenu(0, $_SESSION['USER_PROFILE']);
         <div><img src="<?php echo $url_servidor; ?>/../public/tools/images/cargador-spinner.gif?vers=1.2" alt="Procesando..." /></div>
         <!-- <img src="../public/tools/spinner/ajax-loader.gif" alt="Procesando..."/> -->
     </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.9/dist/autoComplete.min.js"></script>
     <script src="<?php echo $url_servidor; ?>/../public/tools/spinner/spinner.js?version=<?php echo $vrand; ?>"></script>
     <script src="<?php echo $url_servidor; ?>/../public/tools/js/jquery-3.7.1.min.js"></script>
     <script src="<?php echo $url_servidor; ?>/../public/tools/magnific/jquery.magnific-popup.min.js"></script>

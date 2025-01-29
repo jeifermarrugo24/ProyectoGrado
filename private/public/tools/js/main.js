@@ -262,6 +262,13 @@ function consultarContenido() {
             SeleccionarTodo();
             PermisosByPerfil();
           }
+
+          if (
+            atr_contenido == "config-ingresar-libro" ||
+            atr_contenido == "config-ingresar-libro"
+          ) {
+            autocompleteJS();
+          }
         } else {
           alertify.set("notifier", "position", "top-right");
           alertify.error(message, 10);
@@ -1384,5 +1391,30 @@ function VerMas() {
         this.textContent = "Ver mas";
       }
     });
+  });
+}
+
+function autocompleteJS() {
+  const autoCompleteJS = new autoComplete({
+    placeHolder: "Search for Food...",
+    data: {
+      src: [
+        "Sauce - Thousand Island",
+        "Wild Boar - Tenderloin",
+        "Goat - Whole Cut",
+      ],
+      cache: true,
+    },
+    resultItem: {
+      highlight: true,
+    },
+    events: {
+      input: {
+        selection: (event) => {
+          const selection = event.detail.selection.value;
+          autoCompleteJS.input.value = selection;
+        },
+      },
+    },
   });
 }

@@ -177,12 +177,12 @@ class viewCategorias
 
                                                     <div class="col-lg-6 col-12 mb-3 px-2">
                                                         <label for="nombre_perfil" class="label-input">Nombre Categoria: </label>
-                                                        <input type="text" placeholder="Ingrese Nombre" name="nombre_perfil" id="nombre_perfil" value="$materia"/>
+                                                        <input type="text" placeholder="Ingrese Nombre" name="nombre_categoria" id="nombre_categoria" value="$materia"/>
                                                     </div>
 
                                                     <div class="col-lg-6 col-12 mb-3 px-2">
-                                                        <label for="estado_perfil" class="label-input">Estado Categoria: </label>
-                                                        <select name="estado_perfil" id="estado_perfil">
+                                                        <label for="estado_categoria" class="label-input">Estado Categoria: </label>
+                                                        <select name="estado_categoria" id="estado_categoria">
                                                             <option value="">Seleccionar</option>
                                                             <option value="A" $selected_estado_1>Activo</option>
                                                             <option value="I" $selected_estado_0>Inactivo</option>

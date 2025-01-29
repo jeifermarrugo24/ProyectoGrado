@@ -23,3 +23,14 @@ if ($action == 'modal_editar_categoria') {
     }
     $result = json_encode($res);
 }
+
+if ($action == 'editar_categoria') {
+    $data = $_POST;
+    $res = ModelCategorias::editar_categoria($data);
+    if ($res) {
+        $res = array('code' => '200', 'message' => 'Categoria actualizada correctamente.');
+    } else {
+        $res = array('code' => '501', 'message' => 'No se pudó ingresar el perfil.');
+    }
+    $result = json_encode($res);
+}

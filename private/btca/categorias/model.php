@@ -32,4 +32,16 @@ class ModelCategorias
 
         return $result;
     }
+
+    public static function editar_categoria($data)
+    {
+        $nombre_categoria = $data['nombre_categoria'];
+        $estado_categoria = $data['estado_categoria'];
+        $categoria_id = $data['categoria_id'];
+
+        $query = "UPDATE materia SET materia = '$nombre_categoria', estado = '$estado_categoria' WHERE id = '$categoria_id'";
+
+        $result = actualizar($query);
+        return $result;
+    }
 }

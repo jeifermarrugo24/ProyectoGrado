@@ -12,6 +12,7 @@ include_once __DIR__ . "/../btca/permisos/view.php";
 include_once __DIR__ . "/../btca/perfiles/view.php";
 include_once __DIR__ . "/../btca/autores/view.php";
 include_once __DIR__ . "/../btca/categorias/view.php";
+include_once __DIR__ . "/../btca/libros/view.php";
 
 function getContenido($params)
 {
@@ -67,6 +68,14 @@ function getContenido($params)
         $msj = viewCategorias::consultarCategoria();
     }
     //FIN ADMINISTRADOR DE CATEGORIAS
+
+    //ADMINISTRADOR DE LIBROS
+    if ($contenido == "config-ingresar-libro") {
+        $msj = viewLibros::ingresarLibro();
+    } else if ($contenido == 'config-consultar-libro') {
+        $msj = viewLibros::consultarLibros();
+    }
+    //FIN ADMINISTRADOR DE LIBROS
 
 
     $retorno = json_encode(
