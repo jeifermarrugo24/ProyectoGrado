@@ -10,6 +10,7 @@ class viewLibros
         $obtener_autores = ModelAutores::autores_list();
 
         $obtion_autores = '';
+        $arreglo_autores = array();
         foreach ($obtener_autores as $key => $value) {
             $autor_id = $value['autor_id'];
             $autor_nombre = $value['autor_nombre'];
@@ -17,16 +18,19 @@ class viewLibros
             $obtion_autores .= <<<HTML
                 <option value="$autor_id">$autor_nombre $autor_apellido</option>
             HTML;
+            $arreglo_autores[$autor_id] = $autor_nombre . ' ' . $autor_apellido;
         }
 
         $obtener_categoria = ModelCategorias::categoriasList();
         $obtion_categorias = '';
+        $arreglo_categorias = array();
         foreach ($obtener_categoria as $key => $value) {
             $id = $value['id'];
             $materia = $value['materia'];
             $obtion_categorias .= <<<HTML
                 <option value="$id">$materia</option>
             HTML;
+            $arreglo_categorias[$id] = $materia;
         }
 
         $html = <<<HTML
@@ -75,22 +79,12 @@ class viewLibros
                                                         
                                                         <div class="col-lg-6 col-12 mb-3 px-2">
                                                             <label for="autor" class="label-input">Autor: </label>
-                                                            <select name="autor" id="autor">
-                                                                <option value="">Seleccionar</option>
-                                                                $obtion_autores
-                                                            </select>
+                                                            <input id="autores" name="autores" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off" autocapitalize="off">
                                                         </div>
 
                                                         <div class="col-lg-6 col-12 mb-3 px-2">
-                                                            <label for="categoria" class="label-input">Categoria: </label>
-                                                            <select name="categoria" id="categoria">
-                                                                <option value="">Seleccionar</option>
-                                                                $obtion_categorias
-                                                            </select>
-                                                        </div>
-
-                                                        <div class="autoComplete_wrapper">
-                                                            <input id="autoComplete" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off" autocapitalize="off">
+                                                            <label for="categoria" class="label-input">Categorias: </label>
+                                                            <input id="categoria" name="categoria" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off" autocapitalize="off">
                                                         </div>
 
                                                         <div class="col-lg-6 col-12 mb-3 px-2">
@@ -113,7 +107,7 @@ class viewLibros
                                                         </div>
 
                                                         <div class="col-lg-12 col-12 px-2 pt-2">
-                                                            <button type="submit" class="login-btn" id="ingresar_usuario">REGISTRAR</button>
+                                                            <button type="submit" class="login-btn" id="ingresar_libros">REGISTRAR</button>
                                                         </div>
 
                                                     </div>
@@ -130,6 +124,6 @@ class viewLibros
             </div>
         HTML;
 
-        return $html;
+        return array("html" => rawurlencode($html), "autores" => $arreglo_autores, 'categorias' => $arreglo_categorias);
     }
 }

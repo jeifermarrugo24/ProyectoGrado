@@ -52,6 +52,7 @@ $html_menu = HelperMenu::getMenu(0, $_SESSION['USER_PROFILE']);
     <link rel="stylesheet" href="<?php echo $url_servidor; ?>/../../plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <link rel="stylesheet" href="<?php echo $url_servidor; ?>/../../plugins/fontawesome-free/css/all.min.css">
     <link href="<?php echo $url_servidor; ?>/../public/tools/datatables/dataTables.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="<?php echo $url_servidor; ?>/../public/tools/css/autocomplete/autoComplete.min.css">
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed" data-panel-auto-height-mode="height">

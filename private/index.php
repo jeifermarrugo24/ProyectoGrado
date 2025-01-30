@@ -30,7 +30,6 @@ if ($check_status == false) {
     <link rel="shortcut icon" href="<?php echo $url_servidor; ?>/public/tools/images/icono.jpg" type="image/x-icon">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.9/dist/css/autoComplete.min.css">
     <link href="<?php echo $url_servidor; ?>/public/tools/magnific/magnific-popup.css" rel="stylesheet" type="text/css">
     <link href="<?php echo $url_servidor; ?>/public/tools/alertify/alertify.min.css" rel="stylesheet" type="text/css">
     <link href="<?php echo $url_servidor; ?>/public/tools/alertify/default.min.css" rel="stylesheet" type="text/css">

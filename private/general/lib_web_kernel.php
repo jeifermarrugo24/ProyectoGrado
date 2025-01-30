@@ -72,6 +72,15 @@ function getContenido($params)
     //ADMINISTRADOR DE LIBROS
     if ($contenido == "config-ingresar-libro") {
         $msj = viewLibros::ingresarLibro();
+
+        $retorno = array(
+            "code" => "200",
+            "message" => $msj['html'],
+            "autores" => $msj['autores'],
+            "categorias" => $msj['categorias']
+        );
+
+        return json_encode($retorno);
     } else if ($contenido == 'config-consultar-libro') {
         $msj = viewLibros::consultarLibros();
     }
@@ -81,7 +90,7 @@ function getContenido($params)
     $retorno = json_encode(
         array(
             "code" => $code,
-            "message" => rawurlencode(utf8_encode($msj))
+            "message" => rawurlencode(utf8_encode($msj)),
         )
     );
     return $retorno;

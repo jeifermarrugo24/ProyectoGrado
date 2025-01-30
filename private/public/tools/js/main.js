@@ -113,6 +113,7 @@ async function iniciarEventos() {
     ManejadorPerfiles();
     ManejadorAutores();
     ManejadorCategorias();
+    ManejadorLibros();
   } else {
     sessionStart();
   }
@@ -267,7 +268,8 @@ function consultarContenido() {
             atr_contenido == "config-ingresar-libro" ||
             atr_contenido == "config-ingresar-libro"
           ) {
-            autocompleteJS();
+            autocompleteJS("autores", data.autores);
+            autocompleteJS("categoria", data.categorias);
           }
         } else {
           alertify.set("notifier", "position", "top-right");
@@ -1377,6 +1379,100 @@ function ManejadorCategorias() {
   });
 }
 
+function ManejadorLibros() {
+  $("body").on("click", "#ingresar_libros", function () {
+    var id_contenedor = "#contenedor-formulario";
+    var elemento = $(this);
+    var contenedor = $(id_contenedor);
+    var variables = obtener_variables(id_contenedor);
+
+    if (
+      check_empty_field("titulo") &&
+      check_empty_field("descripcion") &&
+      check_empty_field("fecha_edicion") &&
+      check_empty_field("cantidad") &&
+      check_empty_field("numero_paginas") &&
+      check_empty_field("autores") &&
+      check_empty_field("categoria") &&
+      check_empty_field("estado")
+    ) {
+      const fileInput = document.getElementById("upload");
+      const file = fileInput.files[0];
+
+      if (!file) {
+        alertify.set("notifier", "position", "top-right");
+        alertify.error(
+          "Debes seleccionar una imagen de portada para continuar",
+          10
+        );
+        return;
+      }
+
+      const maxFileSize = 5 * 1024 * 1024;
+      if (file.size > maxFileSize) {
+        alertify.set("notifier", "position", "top-right");
+        alertify.error("El tamaño de la imagen no debe exceder los 5 MB", 10);
+        return;
+      }
+
+      const validFileTypes = ["image/jpeg", "image/png", "image/gif"];
+      if (!validFileTypes.includes(file.type)) {
+        alertify.set("notifier", "position", "top-right");
+        alertify.error("Solo se permiten imágenes JPG, PNG o GIF", 10);
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("action", "ingresar_libro");
+      variables[0]
+        .substring(1)
+        .split("&")
+        .filter((pair) => pair && !pair.startsWith("undefined"))
+        .forEach((pair) => {
+          const [key, value] = pair.split("=");
+          if (key && value) {
+            formData.append(key, decodeURIComponent(value));
+          }
+        });
+      formData.append("file", file);
+
+      ajax({
+        method: "POST",
+        url: internal_url_private,
+        data: formData,
+        contentType: false,
+        processData: false,
+        dataType: "json",
+        beforeSend: function () {
+          show_spinner();
+          elemento.prop("disabled", true);
+        },
+        success: function (data) {
+          var code = data.code;
+          var message = data.message;
+          var campo = data.campo;
+
+          if (code === "200") {
+            hide_spinner();
+            alertify.set("notifier", "position", "top-right");
+            alertify.success(message, 10);
+          } else {
+            hide_spinner();
+            alertify.set("notifier", "position", "top-right");
+            alertify.error(message, 10);
+            if (campo.length) {
+              $("#" + campo).addClass("error-input");
+            }
+          }
+        },
+      });
+    } else {
+      alertify.set("notifier", "position", "top-right");
+      alertify.error("Por favor revisé los campos ingresados", 10);
+    }
+  });
+}
+
 function VerMas() {
   const seeMoreLinks = document.querySelectorAll(".see-more");
 
@@ -1394,16 +1490,25 @@ function VerMas() {
   });
 }
 
-function autocompleteJS() {
+function autocompleteJS(selector, dataBusqueda) {
+  let dataAutocomplete = Object.entries(dataBusqueda);
   const autoCompleteJS = new autoComplete({
-    placeHolder: "Search for Food...",
+    selector: "#" + selector,
+    placeHolder: "Buscar...",
     data: {
-      src: [
-        "Sauce - Thousand Island",
-        "Wild Boar - Tenderloin",
-        "Goat - Whole Cut",
-      ],
+      src: dataAutocomplete,
       cache: true,
+    },
+    resultsList: {
+      element: (list, data) => {
+        if (!data.results.length) {
+          const message = document.createElement("div");
+          message.setAttribute("class", "no_result");
+          message.innerHTML = `<span>No existen resultados para "${data.query}"</span>`;
+          list.prepend(message);
+        }
+      },
+      noResults: true,
     },
     resultItem: {
       highlight: true,
