@@ -126,4 +126,81 @@ class viewLibros
 
         return array("html" => rawurlencode($html), "autores" => $arreglo_autores, 'categorias' => $arreglo_categorias);
     }
+
+    public static function consultarLibros()
+    {
+        $libros_list = ModelLibros::obtener_libros();
+
+        foreach ($libros_list as $key => $value) {
+            $id = $value['id'];
+            $titulo = $value['titulo'];
+            $cantidad = $value['cantidad'];
+            $id_autor = $value['id_autor'];
+            $id_editorial = $value['id_editorial'];
+            $anio_edicion = $value['anio_edicion'];
+            $id_materia = $value['id_materia'];
+            $num_pagina = $value['num_pagina'];
+            $descripcion = $value['descripcion'];
+            $imagen = $value['imagen'];
+            $estado = $value['estado'];
+
+            $img_libro = 'private/../../public/tools/images/images_libros/' . $imagen;
+
+
+            $especific_autor = ModelAutores::especific_autor($id_autor);
+            $autor_nombre = $especific_autor['autor_nombre'];
+            $autor_apellido = $especific_autor['autor_apellido'];
+
+            $especific_categoria = ModelCategorias::especific_categoria($id_materia);
+            $materia = $especific_categoria['materia'];
+
+            $htmlbook .= <<<HTML
+                <li>
+                    <a target="_blank">
+                        <div class="bk-book book-1 bk-bookdefault">
+                            <div class="bk-front">
+                                <div class="bk-cover">
+                                    <h2><img src="$img_libro" width="260" height="398"></h2>
+                                </div>
+                                <div class="bk-cover-back"></div>
+                            </div>
+                            <div class="bk-back"></div>
+                            <div class="bk-right"></div>
+                            <div class="bk-left">
+                                <h2><span>$autor_nombre $autor_apellido - $materia</span></h2>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+            HTML;
+        }
+
+        $html = <<<HTML
+        <div class="flex-grow-1 px-4">
+                <div class="row no-gutters justify-content-center">
+                    <div class="pt-4 px-3 col-lg-12">
+                        <h1 class="pr-3 text-left"><b style="font-size:20px; text-transform:uppercase;">Listado De libro</b></h1>
+
+                        <div class="col-12 col-lg-12 m-auto">
+                            <div class="">
+                                <div class="card-body" style="padding-top:0;">
+                                    <div class="row no-gutters">
+                                        <div class="col-lg-12" style="padding:0px;">
+                                            <ul class="bk-list clearfix">
+                                                $htmlbook
+                                            </ul>
+                                        </div>
+                                    </div>  
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        
+        HTML;
+
+        return $html;
+    }
 }

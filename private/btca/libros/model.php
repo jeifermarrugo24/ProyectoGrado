@@ -1,6 +1,15 @@
 <?php
 class ModelLibros
 {
+    public static function obtener_libros()
+    {
+
+        $query = "SELECT * FROM libro WHERE 1 = 1 AND estado = 'A' ORDER BY titulo, id_autor ASC";
+
+        $result = consultar($query);
+
+        return $result;
+    }
     public static function ingresar_libro($data)
     {
         $titulo = $data['titulo'];
