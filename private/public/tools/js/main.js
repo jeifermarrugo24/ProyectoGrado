@@ -264,6 +264,10 @@ function consultarContenido() {
             PermisosByPerfil();
           }
 
+          if (atr_contenido == "config-consultar-libro") {
+            MenuLibros();
+          }
+
           if (
             atr_contenido == "config-ingresar-libro" ||
             atr_contenido == "config-ingresar-libro"
@@ -1521,5 +1525,49 @@ function autocompleteJS(selector, dataBusqueda) {
         },
       },
     },
+  });
+}
+
+function consultarContendoLibros(element) {
+  let valor = element.value;
+
+  const formData = new FormData();
+  formData.append("action", "consultar-contenido-libros");
+  formData.append("valor", valor);
+
+  ajax({
+    method: "POST",
+    url: internal_url_private,
+    data: formData,
+    contentType: false,
+    processData: false,
+    dataType: "json",
+    beforeSend: function () {
+      $("#loader-content").removeClass("d-none");
+    },
+    success: function (data) {
+      var code = data.code;
+      var message = data.message;
+      var html = data.html;
+
+      if (code === "200") {
+        $("#loader-content").addClass("d-none");
+      } else {
+        hide_spinner();
+        alertify.set("notifier", "position", "top-right");
+        alertify.error(message, 10);
+      }
+    },
+  });
+}
+
+function MenuLibros() {
+  $(".box-menu-book .wrapper-book").on("click", function () {
+    $(".box-menu-book").toggleClass("full-menu-book");
+    $(".hamburger-book").toggleClass("active");
+  });
+  $("a").on("click", function () {
+    $(this).siblings("a").removeClass("active");
+    $(this).addClass("active");
   });
 }

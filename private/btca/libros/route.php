@@ -13,3 +13,9 @@ if ($action == 'ingresar_libro') {
     }
     $result = json_encode($res);
 }
+
+if ($action == "consultar-contenido-libros") {
+    $data = $_POST;
+    print_r($data);
+    die;
+}

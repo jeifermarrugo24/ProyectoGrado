@@ -155,7 +155,7 @@ class viewLibros
             $materia = $especific_categoria['materia'];
 
             $htmlbook .= <<<HTML
-                <li>
+                <li style="position:relative;">
                     <a target="_blank">
                         <div class="bk-book book-1 bk-bookdefault">
                             <div class="bk-front">
@@ -171,7 +171,22 @@ class viewLibros
                             </div>
                         </div>
                     </a>
+                    <div class="box-menu-book">
+                        <div class="wrapper-book">
+                            <div class="hamburger-book">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </div>
+                        <div class="menu-book">
+                            <a href="#" class="active"><span class="icon fa fa-info-circle"></span><span class="text">Informacion Adicional</span></a>
+                            <a href="#"><span class="icon fa fa-edit"></span><span class="text">Editar Libro</span></a>
+                         </div>
+                    </div>
                 </li>
+                
             HTML;
         }
 
@@ -186,7 +201,12 @@ class viewLibros
                                 <div class="card-body" style="padding-top:0;">
                                     <div class="row no-gutters">
                                         <div class="col-lg-12" style="padding:0px;">
-                                            <ul class="bk-list clearfix">
+                                            <div class="form-group has-search">
+                                                <span class="fa fa-search form-control-feedback"></span>
+                                                <input type="text" class="form-control" placeholder="Buscar en el contenido..." oninput="consultarContendoLibros(this);">
+                                            </div>
+                                            <div class="loader-content d-none"></div>
+                                            <ul class="bk-list clearfix content-ul-books">
                                                 $htmlbook
                                             </ul>
                                         </div>
