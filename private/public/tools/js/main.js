@@ -1531,12 +1531,12 @@ function autocompleteJS(selector, dataBusqueda) {
   });
 }
 
-function consultarContendoLibros(element) {
+function consultarContendoLibros(element, contenido) {
   let valor = element.value;
   var contenedor = $(".content-ul-books");
 
   const formData = new FormData();
-  formData.append("action", "consultar-contenido-libros");
+  formData.append("action", contenido);
   formData.append("valor", valor);
 
   ajax({

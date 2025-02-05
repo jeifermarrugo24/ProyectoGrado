@@ -87,6 +87,13 @@ function getContenido($params)
     }
     //FIN ADMINISTRADOR DE LIBROS
 
+    //ADMINISTRADOR DE PRESTAMOS
+    if ($contenido == "config-prestamos-libros") {
+        $msj = viewPrestamos::prestamoLibros();
+    } else if ($contenido == 'config-categoria-consultar') {
+        $msj = viewCategorias::consultarCategoria();
+    }
+    //FIN ADMINISTRADOR DE CATEGORIAS
 
     $retorno = json_encode(
         array(

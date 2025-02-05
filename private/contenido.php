@@ -10,6 +10,7 @@ include_once dirname(__FILE__) . '/btca/perfiles/route.php';
 include_once dirname(__FILE__) . '/btca/autores/route.php';
 include_once dirname(__FILE__) . '/btca/categorias/route.php';
 include_once dirname(__FILE__) . '/btca/libros/route.php';
+include_once dirname(__FILE__) . '/btca/prestamos/route.php';
 
 if ($action == "session-start") {
     include_once dirname(__FILE__) . '/general/lib_user_information.php';

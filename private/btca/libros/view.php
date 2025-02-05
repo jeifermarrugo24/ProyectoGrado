@@ -203,7 +203,7 @@ class viewLibros
                                         <div class="col-lg-12" style="padding:0px;">
                                             <div class="form-group has-search">
                                                 <span class="fa fa-search form-control-feedback"></span>
-                                                <input type="text" class="form-control" placeholder="Buscar en el contenido..." oninput="consultarContendoLibros(this);">
+                                                <input type="text" class="form-control" placeholder="Buscar en el contenido..." oninput="consultarContendoLibros(this, 'consultar-contenido-libros');">
                                             </div>
                                             <div class="loader-content d-none"></div>
                                             <ul class="bk-list clearfix content-ul-books">
