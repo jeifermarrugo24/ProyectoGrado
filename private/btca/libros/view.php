@@ -171,7 +171,7 @@ class viewLibros
                             </div>
                         </div>
                     </a>
-                    <div class="box-menu-book">
+                    <!--<div class="box-menu-book">
                         <div class="wrapper-book">
                             <div class="hamburger-book">
                                 <span></span>
@@ -184,7 +184,7 @@ class viewLibros
                             <a href="#" class="active"><span class="icon fa fa-info-circle"></span><span class="text">Informacion Adicional</span></a>
                             <a href="#"><span class="icon fa fa-edit"></span><span class="text">Editar Libro</span></a>
                          </div>
-                    </div>
+                    </div>-->
                 </li>
                 
             HTML;
@@ -220,6 +220,67 @@ class viewLibros
             </div>
         
         HTML;
+
+        return $html;
+    }
+
+    public static function contenidoBusquedaLibro($params)
+    {
+        $valor = $params['valor'];
+
+        $libros_list = ModelLibros::obtener_libros($valor);
+
+        foreach ($libros_list as $key => $value) {
+            $id = $value['id'];
+            $id_autor = $value['id_autor'];
+            $id_materia = $value['id_materia'];
+            $imagen = $value['imagen'];
+
+            $img_libro = 'private/../../public/tools/images/images_libros/' . $imagen;
+
+
+            $especific_autor = ModelAutores::especific_autor($id_autor);
+            $autor_nombre = $especific_autor['autor_nombre'];
+            $autor_apellido = $especific_autor['autor_apellido'];
+
+            $especific_categoria = ModelCategorias::especific_categoria($id_materia);
+            $materia = $especific_categoria['materia'];
+
+            $html .= <<<HTML
+                <li style="position:relative;">
+                    <a target="_blank">
+                        <div class="bk-book book-1 bk-bookdefault">
+                            <div class="bk-front">
+                                <div class="bk-cover">
+                                    <h2><img src="$img_libro" width="260" height="398"></h2>
+                                </div>
+                                <div class="bk-cover-back"></div>
+                            </div>
+                            <div class="bk-back"></div>
+                            <div class="bk-right"></div>
+                            <div class="bk-left">
+                                <h2><span>$autor_nombre $autor_apellido - $materia</span></h2>
+                            </div>
+                        </div>
+                    </a>
+                    <!--<div class="box-menu-book">
+                        <div class="wrapper-book">
+                            <div class="hamburger-book">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </div>
+                        <div class="menu-book">
+                            <a href="#" class="active"><span class="icon fa fa-info-circle"></span><span class="text">Informacion Adicional</span></a>
+                            <a href="#"><span class="icon fa fa-edit"></span><span class="text">Editar Libro</span></a>
+                         </div>
+                    </div>-->
+                </li>
+                
+            HTML;
+        }
 
         return $html;
     }

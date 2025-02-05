@@ -264,7 +264,10 @@ function consultarContenido() {
             PermisosByPerfil();
           }
 
-          if (atr_contenido == "config-consultar-libro") {
+          if (
+            atr_contenido == "config-consultar-libro" ||
+            atr_contenido == "consultar-contenido-libros"
+          ) {
             MenuLibros();
           }
 
@@ -1530,6 +1533,7 @@ function autocompleteJS(selector, dataBusqueda) {
 
 function consultarContendoLibros(element) {
   let valor = element.value;
+  var contenedor = $(".content-ul-books");
 
   const formData = new FormData();
   formData.append("action", "consultar-contenido-libros");
@@ -1543,7 +1547,8 @@ function consultarContendoLibros(element) {
     processData: false,
     dataType: "json",
     beforeSend: function () {
-      $("#loader-content").removeClass("d-none");
+      $(".loader-content").removeClass("d-none");
+      contenedor.html("");
     },
     success: function (data) {
       var code = data.code;
@@ -1551,7 +1556,8 @@ function consultarContendoLibros(element) {
       var html = data.html;
 
       if (code === "200") {
-        $("#loader-content").addClass("d-none");
+        $(".loader-content").addClass("d-none");
+        contenedor.html(html);
       } else {
         hide_spinner();
         alertify.set("notifier", "position", "top-right");

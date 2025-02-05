@@ -1,10 +1,22 @@
 <?php
 class ModelLibros
 {
-    public static function obtener_libros()
+    public static function obtener_libros($valor = '')
     {
+        if ($valor != '') {
+            $sqlCondition = "AND l.titulo LIKE '%$valor%' OR au.autor_nombre LIKE '%$valor%'";
+        }
 
-        $query = "SELECT * FROM libro WHERE 1 = 1 AND estado = 'A' ORDER BY titulo, id_autor ASC";
+        $query = "
+        SELECT l.titulo, l.id_autor, l.cantidad, l.id_editorial, l.anio_edicion, l.id_materia, l.num_pagina, l.descripcion, l.imagen, l.estado
+        FROM libro AS l 
+        INNER JOIN autor AS au 
+        ON l.id_autor = au.autor_id 
+        WHERE l.estado = 'A' $sqlCondition
+        GROUP BY l.titulo, l.id_autor 
+        ORDER BY l.titulo, l.id_autor ASC;
+        ";
+
 
         $result = consultar($query);
 
