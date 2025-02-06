@@ -8,7 +8,7 @@ class ModelLibros
         }
 
         $query = "
-        SELECT l.titulo, l.id_autor, l.cantidad, l.id_editorial, l.anio_edicion, l.id_materia, l.num_pagina, l.descripcion, l.imagen, l.estado
+        SELECT l.id, l.titulo, l.id_autor, l.cantidad, l.id_editorial, l.anio_edicion, l.id_materia, l.num_pagina, l.descripcion, l.imagen, l.estado
         FROM libro AS l 
         INNER JOIN autor AS au 
         ON l.id_autor = au.autor_id 
@@ -22,6 +22,15 @@ class ModelLibros
 
         return $result;
     }
+
+    public static function espefic_libro($id_libro)
+    {
+        $query = "SELECT * FROM libro WHERE 1=1 AND id = '$id_libro' AND estado='A'";
+        $result = consultar($query);
+
+        return $result[0];
+    }
+
     public static function ingresar_libro($data)
     {
         $titulo = $data['titulo'];

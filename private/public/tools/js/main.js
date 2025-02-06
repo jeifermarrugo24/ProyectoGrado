@@ -114,6 +114,7 @@ async function iniciarEventos() {
     ManejadorAutores();
     ManejadorCategorias();
     ManejadorLibros();
+    PrestamoLibrosUsuarios();
   } else {
     sessionStart();
   }
@@ -1560,8 +1561,7 @@ function consultarContendoLibros(element, contenido) {
         contenedor.html(html);
       } else {
         hide_spinner();
-        alertify.set("notifier", "position", "top-right");
-        alertify.error(message, 10);
+        contenedor.html(message);
       }
     },
   });
@@ -1575,5 +1575,13 @@ function MenuLibros() {
   $("a").on("click", function () {
     $(this).siblings("a").removeClass("active");
     $(this).addClass("active");
+  });
+}
+
+function PrestamoLibrosUsuarios() {
+  $("body").on("click", "#prestar_libro_usuario", function () {
+    let elemento = $(this);
+    let idLibro = elemento.attr("atr_id");
+    ModalEditar(idLibro, "modal_prestamo_libros");
   });
 }
