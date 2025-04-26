@@ -52,6 +52,9 @@ function getContenido($params)
     if ($contenido == "accion_ingresar_permiso") {
         $msj = viewPermisos::permisos_usuario();
     }
+    if ($contenido == "config-reingreso-libros") {
+        $msj = viewPrestamos::reingresoLibrosUsuarios();
+    }
     //FIN ADMINISTRADOR DE PERMISOS
 
     //ADMINISTRADOR DE AUTORES

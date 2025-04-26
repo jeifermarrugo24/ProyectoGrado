@@ -1,7 +1,6 @@
 let contenidoActual = null;
 let contenidoPrev = null;
 let sendedAplyDepositosSeleccionados = false;
-
 $(document).ready(iniciarEventos);
 
 const formato_moneda = new Intl.NumberFormat("es-MX", {
@@ -115,6 +114,7 @@ async function iniciarEventos() {
     ManejadorCategorias();
     ManejadorLibros();
     PrestamoLibrosUsuarios();
+    ManejadorPrestamos();
   } else {
     sessionStart();
   }
@@ -708,11 +708,135 @@ function ModalEditar(id, action) {
       show_spinner();
     },
     success: function (data) {
+      console.log(data);
       let code = data.code;
       let html = data.html;
+      let usuarios = data.usuarios;
+
       SweetModal(html, 1000);
+      if (usuarios) {
+        autocompleteJS("usuario", usuarios);
+      }
       hide_spinner();
     },
+  });
+}
+
+function ManejadorPrestamos() {
+  $("body").on("click", "#ingresar_prestamo_libro", function () {
+    var id_contenedor = "#contenedor-formulario";
+    var elemento = $(this);
+    var contenedor = $(id_contenedor);
+    var variables = obtener_variables(id_contenedor);
+    if (
+      check_empty_field("cantidad") &&
+      check_empty_field("usuario") &&
+      check_empty_field("estado")
+    ) {
+      const formData = new FormData();
+      formData.append("action", "ingresar_prestamo_libro");
+      variables[0]
+        .substring(1)
+        .split("&")
+        .filter((pair) => pair && !pair.startsWith("undefined"))
+        .forEach((pair) => {
+          const [key, value] = pair.split("=");
+          if (key && value) {
+            formData.append(key, decodeURIComponent(value));
+          }
+        });
+      ajax({
+        method: "POST",
+        url: internal_url_private,
+        data: formData,
+        contentType: false,
+        processData: false,
+        dataType: "json",
+        beforeSend: function () {
+          show_spinner();
+          elemento.prop("disabled", true);
+        },
+        success: function (data) {
+          var code = data.code;
+          var message = data.message;
+          var campo = data.campo;
+
+          if (code === "200") {
+            hide_spinner();
+            alertify.set("notifier", "position", "top-right");
+            alertify.success(message, 10);
+          } else {
+            hide_spinner();
+            alertify.set("notifier", "position", "top-right");
+            alertify.error(message, 10);
+            if (campo.length) {
+              $("#" + campo).addClass("error-input");
+            }
+          }
+        },
+      });
+    } else {
+      alertify.set("notifier", "position", "top-right");
+      alertify.error("Por favor revisé los campos ingresados", 10);
+    }
+  });
+
+  $("body").on("click", "#editar_prestamo_libro", function () {
+    var id_contenedor = "#contenedor-formulario";
+    var elemento = $(this);
+    var contenedor = $(id_contenedor);
+    var variables = obtener_variables(id_contenedor);
+    console.log(variables);
+    if (
+      check_empty_field("cantidad") &&
+      check_empty_field("usuario") &&
+      check_empty_field("estado")
+    ) {
+      const formData = new FormData();
+      formData.append("action", "editar_prestamo_libro");
+      formData.append("usuario", $("#usuario").val());
+      formData.append("cantidad", $("#cantidad").val());
+      formData.append("estado", $("#estado").val());
+      formData.append("fecha_prestamo", $("#fecha_prestamo").val());
+      formData.append("fecha_exp", $("#fecha_exp").val());
+      formData.append("observaciones", $("#observaciones").val());
+      formData.append("id_libro", $("#id_libro").val());
+      formData.append("id_select", $("#id_select").val());
+
+      ajax({
+        method: "POST",
+        url: internal_url_private,
+        data: formData,
+        contentType: false,
+        processData: false,
+        dataType: "json",
+        beforeSend: function () {
+          show_spinner();
+          elemento.prop("disabled", true);
+        },
+        success: function (data) {
+          var code = data.code;
+          var message = data.message;
+          var campo = data.campo;
+
+          if (code === "200") {
+            hide_spinner();
+            alertify.set("notifier", "position", "top-right");
+            alertify.success(message, 10);
+          } else {
+            hide_spinner();
+            alertify.set("notifier", "position", "top-right");
+            alertify.error(message, 10);
+            if (campo.length) {
+              $("#" + campo).addClass("error-input");
+            }
+          }
+        },
+      });
+    } else {
+      alertify.set("notifier", "position", "top-right");
+      alertify.error("Por favor revisé los campos ingresados", 10);
+    }
   });
 }
 
@@ -1430,6 +1554,21 @@ function ManejadorLibros() {
         return;
       }
 
+      const filePdfInput = document.getElementById("pdf-upload");
+      const pdfFile = filePdfInput.files[0];
+
+      if (!pdfFile) {
+        alertify.set("notifier", "position", "top-right");
+        alertify.error("Debes seleccionar un archivo PDF para continuar", 10);
+        return;
+      }
+
+      if (pdfFile.type !== "application/pdf") {
+        alertify.set("notifier", "position", "top-right");
+        alertify.error("Solo se permite subir archivos en formato PDF", 10);
+        return;
+      }
+
       const formData = new FormData();
       formData.append("action", "ingresar_libro");
       variables[0]
@@ -1443,6 +1582,7 @@ function ManejadorLibros() {
           }
         });
       formData.append("file", file);
+      formData.append("pdfFile", pdfFile);
 
       ajax({
         method: "POST",
@@ -1584,4 +1724,44 @@ function PrestamoLibrosUsuarios() {
     let idLibro = elemento.attr("atr_id");
     ModalEditar(idLibro, "modal_prestamo_libros");
   });
+}
+
+function SweetModalPDF(link, pdfName, tamano) {
+  const contenedorOriginal = document.getElementById("adobe-dc-view");
+  const contenedorClonado = contenedorOriginal.cloneNode(false);
+  contenedorClonado.classList.remove("d-none");
+  contenedorClonado.id = "adobe-dc-view-temp";
+
+  if (pdfName == "NO-PDF.pdf") {
+    alertify.set("notifier", "position", "top-right");
+    alertify.warning("Este libro no cuenta con un archivo PDF", 50);
+  }
+
+  Swal.fire({
+    html: contenedorClonado,
+    showConfirmButton: false,
+    showCloseButton: true,
+    width: tamano,
+    didOpen: () => {
+      const adobeDCView = new AdobeDC.View({
+        clientId: "a36b7302ee4f4ab7af74a12e8cd0628b",
+        divId: "adobe-dc-view-temp",
+      });
+
+      adobeDCView.previewFile({
+        content: {
+          location: { url: link },
+        },
+        metaData: { fileName: pdfName },
+      });
+    },
+    didClose: () => {
+      const tempViewer = document.getElementById("adobe-dc-view-temp");
+      if (tempViewer) tempViewer.remove();
+    },
+  });
+}
+
+function generarPDF(link, pdfName) {
+  SweetModalPDF(link, pdfName, 1700);
 }

@@ -121,9 +121,11 @@ if (!isset($tarea_programada) && $tarea_programada != 'listo') {
     session_start();
     //depurar("SESS2: ".json_encode($_SESSION));
     if (!empty($_SESSION)) {
-        while (list($name, $value) = each($_SESSION)) {
+        foreach ($_SESSION as $name => $value) {
             $$name = $value;
         }
+        /*while (list($name, $value) = each($_SESSION)) {
+        }*/
     }
 }
 

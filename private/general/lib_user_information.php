@@ -16,7 +16,6 @@ function validate_session_data($data)
         $destination_url = $url_servidor . '/btca';
         $_SESSION['USER_ID'] = $result['id'];
         $_SESSION['USER_NAME'] = $result['nombre'];
-        $_SESSION['USER_LAST_NAME'] = $result['last_name'];
         $_SESSION['USER_PROFILE'] = $result['perfil'];
         $_SESSION['USER_IMG_PERFIL'] = $result['img_perfil'];
         $_SESSION['USER_CART_ID'] = '';

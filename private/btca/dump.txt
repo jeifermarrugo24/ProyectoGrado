@@ -1,0 +1,1 @@
+SESS2: {"USER_ID":"1","USER_NAME":"Jeifer Marrugo","USER_LAST_NAME":null,"USER_PROFILE":"1","USER_IMG_PERFIL":"https:\/\/static.vecteezy.com\/system\/resources\/previews\/011\/186\/876\/non_2x\/male-profile-picture-symbol-vector.jpg","USER_CART_ID":"","USER_CART_TOKEN":""}

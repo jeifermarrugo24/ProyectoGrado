@@ -96,6 +96,11 @@ class viewLibros
                                                             </select>
                                                         </div>
 
+                                                        <div class="col-lg-6 col-12 mb-3 px-2">
+                                                            <label for="categoria" class="label-input">PDF Libro: </label>
+                                                            <input type="file" id="pdf-upload" accept="application/pdf">
+                                                        </div>
+
                                                         <label for="imagen" class="label-input">Portada Libro: </label>
                                                         <div class="wrap col-lg-12" style="justify-items: center;">
                                                             <div class="thumb">
@@ -143,9 +148,14 @@ class viewLibros
             $descripcion = $value['descripcion'];
             $imagen = $value['imagen'];
             $estado = $value['estado'];
+            $pdf_name = $value['pdf_name'];
+
+            if ($pdf_name == '' || $pdf_name == NULL) {
+                $pdf_name = 'NO-PDF.pdf';
+            }
 
             $img_libro = 'private/../../public/tools/images/images_libros/' . $imagen;
-
+            $pdf_libro = 'private/../../public/tools/pdf/pdf_libros/' . $pdf_name;
 
             $especific_autor = ModelAutores::especific_autor($id_autor);
             $autor_nombre = $especific_autor['autor_nombre'];
@@ -171,22 +181,29 @@ class viewLibros
                             </div>
                         </div>
                     </a>
-                    <!--<div class="box-menu-book">
-                        <div class="wrapper-book">
-                            <div class="hamburger-book">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div>
+                    <div class="wrapper-prestamo">
+                        <div class="btn-container-prestamo d-flex">
+                            <a id="" class="btn-prestamo btn--1" atr_id='$id' onclick="generarPDF('$pdf_libro', '$pdf_name')">
+                                <div class="content d-flex">
+                                    <div class="front">
+                                        <div class="border"></div>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-eye" viewBox="0 0 16 16">
+                                            <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/>
+                                            <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/>
+                                        </svg>
+                                    </div>
+                                    <div class="back">
+                                        <div class="border"></div>
+                                        <p>Entregar</p>
+                                    </div>
+                                </div>
+                            </a> 
+                            <div class="">
+                                <span style="color:white; font-weight:bold;">Ver Libro PDF</span>
+                            </div>                       
                         </div>
-                        <div class="menu-book">
-                            <a href="#" class="active"><span class="icon fa fa-info-circle"></span><span class="text">Informacion Adicional</span></a>
-                            <a href="#"><span class="icon fa fa-edit"></span><span class="text">Editar Libro</span></a>
-                         </div>
-                    </div>-->
+                    </div>
                 </li>
-                
             HTML;
         }
 
@@ -218,6 +235,8 @@ class viewLibros
                     </div>
                 </div>
             </div>
+
+            <script src="https://acrobatservices.adobe.com/view-sdk/viewer.js"></script>
         
         HTML;
 

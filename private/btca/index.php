@@ -189,6 +189,7 @@ $html_menu = HelperMenu::getMenu(0, $_SESSION['USER_PROFILE']);
         <div><img src="<?php echo $url_servidor; ?>/../public/tools/images/cargador-spinner.gif?vers=1.2" alt="Procesando..." /></div>
         <!-- <img src="../public/tools/spinner/ajax-loader.gif" alt="Procesando..."/> -->
     </div>
+    <div id="adobe-dc-view" class="d-none" style="height: 900px;"></div>
     <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.9/dist/autoComplete.min.js"></script>
     <script src="<?php echo $url_servidor; ?>/../public/tools/spinner/spinner.js?version=<?php echo $vrand; ?>"></script>
     <script src="<?php echo $url_servidor; ?>/../public/tools/js/jquery-3.7.1.min.js"></script>
@@ -209,6 +210,7 @@ $html_menu = HelperMenu::getMenu(0, $_SESSION['USER_PROFILE']);
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="<?php echo $url_servidor; ?>/../public/tools/js/main.js?version=<?php echo $vrand; ?>"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
 </body>
 
 </html>

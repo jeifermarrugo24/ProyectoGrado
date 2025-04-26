@@ -9,7 +9,7 @@ if ($action == 'ingresar_libro') {
     if ($res) {
         $res = array('code' => '200', 'message' => 'Libro guardado correctamente.');
     } else {
-        $res = array('code' => '501', 'message' => 'No se pudó ingresar el usuario.');
+        $res = array('code' => '501', 'message' => 'No se pudó ingresar el libro.');
     }
     $result = json_encode($res);
 }
