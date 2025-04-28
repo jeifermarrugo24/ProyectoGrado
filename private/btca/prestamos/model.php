@@ -15,7 +15,7 @@ class ModelPrestamos
         $datos = explode(",", $usuario);
         $id_usuario = $datos[0];
 
-        $sqlquery = "INSERT INTO prestamo (id_estudiante, id_libro, fecha_prestamo, fecha_devolucion, cantidad, observacion, estado) VALUES ('$id_usuario', '$id_libro', '$fecha_prestamo', '$fecha_exp', '$cantidad', '$observaciones', '$estado')";
+        $sqlquery = "INSERT INTO prestamo (id_estudiante, id_libro, fecha_prestamo, fecha_devolucion, cantidad, observacion, recibido, estado) VALUES ('$id_usuario', '$id_libro', '$fecha_prestamo', '$fecha_exp', '$cantidad', '$observaciones', 'N','$estado')";
 
         $res = insertar($sqlquery);
 
@@ -70,9 +70,13 @@ class ModelPrestamos
         return $res;
     }
 
-    public static function prestamos_list()
+    public static function prestamos_list($recibido = "")
     {
-        $query = "SELECT * FROM prestamo WHERE 1 = 1";
+        if ($recibido != '') {
+            $sql_condicion .= "AND recibido = '$recibido'";
+        }
+
+        $query = "SELECT * FROM prestamo WHERE 1 = 1 $sql_condicion";
 
         $result = consultar($query);
 
@@ -86,5 +90,35 @@ class ModelPrestamos
         $result = consultar($query);
 
         return $result[0];
+    }
+
+    public static function recepcion_libro_prestado($data)
+    {
+        $id_prestamo = $data['id_prestamo'];
+        $data_prestamo = ModelPrestamos::specific_prestamos($id_prestamo);
+        $id_libro = $data_prestamo['id_libro'];
+        $cantidad_prestada = $data_prestamo['cantidad'];
+        $fecha_actual = date('Y-m-d H:i:s');
+
+        $sql_insert = "INSERT INTO recepcion_libros(recepcion_fecha, recepcion_id_prestamo, recepcion_id_libro) VALUES ('$fecha_actual','$id_prestamo','$id_libro')";
+
+        $res = insertar($sql_insert);
+
+        if ($res) {
+            $sql_update = "UPDATE prestamo SET recibido = 'S' WHERE id = '$id_prestamo'";
+            $res_update = actualizar($sql_update);
+            if ($res_update) {
+                $query = "SELECT cantidad FROM libro WHERE 1 = 1 AND id = '$id_libro'";
+                $result = consultar($query)[0];
+                if ($result) {
+                    $cantidad_actual = $result['cantidad'];
+                    $cantidad_total = $cantidad_actual + $cantidad_prestada;
+                    $query = "UPDATE libro SET cantidad = '$cantidad_total' WHERE id = '$id_libro'";
+                    $result = actualizar($query);
+                }
+            }
+        }
+
+        return $res;
     }
 }

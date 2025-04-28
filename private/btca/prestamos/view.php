@@ -466,7 +466,7 @@ class viewPrestamos
 
     public static function reingresoLibrosUsuarios()
     {
-        $prestamos_list = ModelPrestamos::prestamos_list();
+        $prestamos_list = ModelPrestamos::prestamos_list($recibido = 'N');
         if (is_array($prestamos_list) && count($prestamos_list) > 0) {
             foreach ($prestamos_list as $key => $value) {
                 $id = $value['id'];
@@ -497,7 +497,7 @@ class viewPrestamos
                         <td class="text-center">$cantidad</td>
                         <td class="text-center">$observacion</td>
                         <td class="text-center">
-                            <a href="javascript:void(0)" onclick="ModalRecibirLibro('$id', 'modal_recibir_prestamo')">
+                            <a href="javascript:void(0)" onclick="ModalEditar('$id', 'modal_recibir_prestamo')">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-raised-hand" viewBox="0 0 16 16">
                                     <path d="M6 6.207v9.043a.75.75 0 0 0 1.5 0V10.5a.5.5 0 0 1 1 0v4.75a.75.75 0 0 0 1.5 0v-8.5a.25.25 0 1 1 .5 0v2.5a.75.75 0 0 0 1.5 0V6.5a3 3 0 0 0-3-3H6.236a1 1 0 0 1-.447-.106l-.33-.165A.83.83 0 0 1 5 2.488V.75a.75.75 0 0 0-1.5 0v2.083c0 .715.404 1.37 1.044 1.689L5.5 5c.32.32.5.754.5 1.207"/>
                                     <path d="M8 3a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"/>
@@ -508,6 +508,18 @@ class viewPrestamos
                 HTML;
             }
         } else {
+            $tbody = <<<HTML
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="p-2">No existen resultados</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            HTML;
         }
 
         $html = <<<HTML
@@ -561,5 +573,138 @@ class viewPrestamos
             </div>
         HTML;
         return $html;
+    }
+
+    public static function recibirPrestamoLibrosUsuarios($data)
+    {
+        $id = $data['id'];
+        $prestamo = ModelPrestamos::specific_prestamos($id);
+
+        $id_estudiante = $prestamo['id_estudiante'];
+        $id_libro = $prestamo['id_libro'];
+
+        $especific_libro = ModelLibros::espefic_libro($id_libro);
+        $titulo = $especific_libro['titulo'];
+        $id_autor = $especific_libro['id_autor'];
+        $imagen = $especific_libro['imagen'];
+        $id_materia = $especific_libro['id_materia'];
+
+        $especific_categoria = ModelCategorias::especific_categoria($id_materia);
+        $materia = $especific_categoria['materia'];
+
+        $img_libro = 'private/../../public/tools/images/images_libros/' . $imagen;
+
+        $especific_autor = ModelAutores::especific_autor($id_autor);
+        $autor_nombre = $especific_autor['autor_nombre'];
+        $autor_apellido = $especific_autor['autor_apellido'];
+
+
+        $especific_user = ModelUsuarios::especific_user($id_estudiante);
+        $usuario = $especific_user['usuario'];
+        $nombre = $especific_user['nombre'];
+        $perfil = $especific_user['perfil'];
+        $img_perfil = $especific_user['img_perfil'];
+
+        if ($img_perfil != 'https://static.vecteezy.com/system/resources/previews/011/186/876/non_2x/male-profile-picture-symbol-vector.jpg') {
+            $img_perfil = 'private/../../public/tools/images/images_perfiles/' . $img_perfil;
+        }
+
+        $especific_perfil = ModelPerfiles::especific_perfil($perfil);
+        $perfil_nombre = $especific_perfil['perfil_nombre'];
+
+
+        $html = <<<HTML
+        <div class="flex-grow-1">
+            <div class="row no-gutters justify-content-center">
+                <div class="pt-4 col-lg-12">
+                    <h1 class="pr-3 text-left"><b style="font-size:20px; text-transform:uppercase;">RECEPCION DE LIBROS</b></h1>
+
+                    <div class="col-12 col-lg-12 m-auto">
+                        <div class="card">
+                            <div class="card-body" style="padding-top:0;">
+                                <div class="row no-gutters">
+                                    <div class="col-lg-12">
+                                        <div class="row no-gutters" id="contenedor-formulario">
+                                            <div class="col-lg-12 px-2 pt-2">
+                                                <h2><b style="font-size:17px;">DATOS DEL LIBRO Y USUARIO</b></h2>
+                                                <hr>
+                                            </div>
+                                            <div class="container">
+                                                <div class="row justify-content-center align-items-center">
+                                                    <!-- Primera tarjeta -->
+                                                    <div class="col-lg-5 col-12 d-flex justify-content-center">
+                                                        <div class="card w-100 mb-3" style="">
+                                                            <div class="row g-0">
+                                                                <div class="col-md-4 my-auto" style="">
+                                                                    <img src="$img_libro" class="img-fluid rounded-start" alt="...">
+                                                                </div>
+                                                                <div class="col-md-8">
+                                                                    <div class="card-body">
+                                                                        <h4 class="mb-4">DATOS DEL LIBRO</h4>
+                                                                        <p><strong>Nombre Libro:</strong><br> $titulo</p>
+                                                                        <p><strong>Escritor:</strong><br> $autor_nombre $autor_apellido</p>
+                                                                        <p><strong>Categoría:</strong><br> $materia</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-auto d-flex flex-column align-items-center mx-2 mb-3">
+                                                        <div class="d-flex">
+                                                            <!-- Flecha izquierda -->
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-caret-left-fill mx-1" viewBox="0 0 16 16">
+                                                                <path d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z"/>
+                                                            </svg>
+
+                                                            <!-- Flecha derecha -->
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-caret-right-fill mx-1" viewBox="0 0 16 16">
+                                                                <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
+                                                            </svg>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Segunda tarjeta -->
+                                                    <div class="col-lg-5 col-12 d-flex justify-content-center">
+                                                        <div class="card w-100 mb-3" style="">
+                                                            <div class="row g-0">
+                                                                <div class="col-md-4 my-auto">
+                                                                    <img src="$img_perfil" class="img-fluid rounded-start" alt="...">
+                                                                </div>
+                                                                <div class="col-md-8">
+                                                                    <div class="card-body">
+                                                                        <h4 class="mb-4">DATOS DEL USUARIO</h4>
+                                                                        <p><strong>Nombre Usuario:</strong><br> $nombre</p>
+                                                                        <p><strong>Usuario:</strong><br> $usuario</p>
+                                                                        <p><strong>Perfil:</strong><br> $perfil_nombre</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Botón abajo -->
+                                                <div class="row mt-4">
+                                                    <div class="col-12 text-center">
+                                                        <button type="submit" class="login-btn" data-id-prestamo = '$id' id = "recibir_libro_prestado">RECIBIR LIBRO</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </div>  
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    HTML;
+
+        return array('html' => $html);
     }
 }

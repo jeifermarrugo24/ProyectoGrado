@@ -51,6 +51,17 @@ if ($action == 'modal_editar_prestamo') {
     $result = json_encode($res);
 }
 
+if ($action == 'modal_recibir_prestamo') {
+    $data = $_POST;
+    $res = viewPrestamos::recibirPrestamoLibrosUsuarios($data);
+    if ($res) {
+        $res = array('code' => '200', 'message' => 'Contenido mostrado correctamente', 'html' => $res['html'], 'usuarios' => $res['usuarios']);
+    } else {
+        $res = array('code' => '501', 'message' => 'No se pudó mostrar el contenido');
+    }
+    $result = json_encode($res);
+}
+
 
 if ($action == 'editar_prestamo_libro') {
     $data = $_POST;
@@ -60,6 +71,17 @@ if ($action == 'editar_prestamo_libro') {
     $res = ModelPrestamos::editar_prestamo_libro($data);
     if ($res) {
         $res = array('code' => '200', 'message' => "Libro actualizado correctamente, asignado al usuario $nombre.");
+    } else {
+        $res = array('code' => '501', 'message' => "No se pudó prestar el libro al usuario $nombre.");
+    }
+    $result = json_encode($res);
+}
+
+if ($action == 'recepcion_libro_prestado') {
+    $data = $_POST;
+    $res = ModelPrestamos::recepcion_libro_prestado($data);
+    if ($res) {
+        $res = array('code' => '200', 'message' => "Libro recibido correctamente.");
     } else {
         $res = array('code' => '501', 'message' => "No se pudó prestar el libro al usuario $nombre.");
     }

@@ -1724,6 +1724,23 @@ function PrestamoLibrosUsuarios() {
     let idLibro = elemento.attr("atr_id");
     ModalEditar(idLibro, "modal_prestamo_libros");
   });
+
+  $("body").on("click", "#recibir_libro_prestado", function () {
+    var id_prestamo = $(this).attr("data-id-prestamo");
+    Swal.fire({
+      title: "Estas seguro(a) de recibir el libro?",
+      showDenyButton: true,
+      confirmButtonText: "Confirmar",
+      denyButtonText: `No`,
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        RecepcionLibroPrestamo(id_prestamo);
+      } else if (result.isDenied) {
+        Swal.fire("Accion cancelada!", "", "info");
+      }
+    });
+  });
 }
 
 function SweetModalPDF(link, pdfName, tamano) {
@@ -1764,4 +1781,39 @@ function SweetModalPDF(link, pdfName, tamano) {
 
 function generarPDF(link, pdfName) {
   SweetModalPDF(link, pdfName, 1700);
+}
+
+function RecepcionLibroPrestamo(id) {
+  const formData = new FormData();
+  formData.append("action", "recepcion_libro_prestado");
+  formData.append("id_prestamo", id);
+  ajax({
+    method: "POST",
+    url: internal_url_private,
+    data: formData,
+    contentType: false,
+    processData: false,
+    dataType: "json",
+    beforeSend: function () {
+      show_spinner();
+    },
+    success: function (data) {
+      var code = data.code;
+      var message = data.message;
+      var campo = data.campo;
+
+      if (code === "200") {
+        hide_spinner();
+        alertify.set("notifier", "position", "top-right");
+        alertify.success(message, 10);
+      } else {
+        hide_spinner();
+        alertify.set("notifier", "position", "top-right");
+        alertify.error(message, 10);
+        if (campo.length) {
+          $("#" + campo).addClass("error-input");
+        }
+      }
+    },
+  });
 }
