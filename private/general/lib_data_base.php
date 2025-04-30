@@ -147,22 +147,24 @@ function insertar_traer_id($transaccion)
 {
     global $usuario_db, $bd, $puerto_usuario_db_web, $clave_usuario_db_web, $host_usuario_db_web;
 
-    $database = @mysqli_connect($host_usuario_db_web, $usuario_db, $clave_usuario_db_web, $bd, $puerto_usuario_db_web);
+    $database = mysqli_connect($host_usuario_db_web, $usuario_db, $clave_usuario_db_web, $bd);
 
-    if ($database != FALSE) {
-        $result = @mysqli_query($database, $transaccion);
-
-        if ($result != FALSE) {
-            $id = @mysqli_insert_id($database);
-            @mysqli_close($database);
-            return $id;
-        } else {
-            @mysqli_close($database);
-            return FALSE;
-        }
+    if (!$database) {
+        error_log("Error de conexión: " . mysqli_connect_error());
+        return false;
     }
-    return FALSE;
+
+    if (mysqli_query($database, $transaccion)) {
+        $id = mysqli_insert_id($database);
+        mysqli_close($database);
+        return $id;
+    } else {
+        error_log("Error en la consulta: " . mysqli_error($database));
+        mysqli_close($database);
+        return false;
+    }
 }
+
 
 
 ////////////////////////////////////////////////////////////////////////////////

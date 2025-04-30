@@ -1,8 +1,12 @@
 <?php
+require_once __DIR__ . '/../../../private/btca/mails/model.php';
+
 class ModelPrestamos
 {
     public static function ingresar_prestamo_libro($data)
     {
+
+        $mail = new ModelMail();
 
         $usuario = $data['usuario'];
         $fecha_prestamo = $data['fecha_prestamo'];
@@ -17,7 +21,7 @@ class ModelPrestamos
 
         $sqlquery = "INSERT INTO prestamo (id_estudiante, id_libro, fecha_prestamo, fecha_devolucion, cantidad, observacion, recibido, estado) VALUES ('$id_usuario', '$id_libro', '$fecha_prestamo', '$fecha_exp', '$cantidad', '$observaciones', 'N','$estado')";
 
-        $res = insertar($sqlquery);
+        $res = insertar_traer_id($sqlquery);
 
         if ($res) {
 
@@ -30,6 +34,16 @@ class ModelPrestamos
                 $result = actualizar($query);
             }
         }
+
+        $id_last_prestamo = $res;
+
+        $array_correo = array(
+            'referencia' => $id_last_prestamo,
+            'tipo_notificacion' => 'ingreso_prestamo'
+        );
+
+        $mail->enviar_notificacion($array_correo);
+
 
         return $res;
     }
@@ -94,6 +108,8 @@ class ModelPrestamos
 
     public static function recepcion_libro_prestado($data)
     {
+        $mail = new ModelMail();
+
         $id_prestamo = $data['id_prestamo'];
         $data_prestamo = ModelPrestamos::specific_prestamos($id_prestamo);
         $id_libro = $data_prestamo['id_libro'];
@@ -118,6 +134,14 @@ class ModelPrestamos
                 }
             }
         }
+
+        $array_correo = array(
+            'referencia' => $id_prestamo,
+            'tipo_notificacion' => 'recepcion_libro'
+        );
+
+
+        $mail->enviar_notificacion($array_correo);
 
         return $res;
     }

@@ -26,6 +26,8 @@ if ($check_status == false) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-signin-client_id" content="593319116286-h8fjp46h5pl365m9e90k2r70ro0658ue.apps.googleusercontent.com">
+
     <title>JES-Login</title>
     <link rel="shortcut icon" href="<?php echo $url_servidor; ?>/public/tools/images/icono.jpg" type="image/x-icon">
 
@@ -81,8 +83,7 @@ if ($check_status == false) {
 
             <div class="btn-group d-flex flex-column flex-md-row gap-2 mb-4">
                 <button class="btn d-flex align-items-center justify-content-center">
-                    <img class="logo" src="https://github.com/ecemgo/mini-samples-great-tricks/assets/13468728/d1c98974-c62d-4071-8bd2-ab859fc5f4e9" alt="" />
-                    <span>Ingresar con google</span>
+                    <div class="g-signin2" data-onsuccess="onSignIn"></div>
                 </button>
                 <button class="btn d-flex align-items-center justify-content-center">
                     <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/2021_Facebook_icon.svg/2048px-2021_Facebook_icon.svg.png" alt="" />
@@ -162,6 +163,21 @@ if ($check_status == false) {
     <script src="<?php echo $url_servidor; ?>/public/tools/magnific/jquery.magnific-popup.min.js"></script>
     <script src="<?php echo $url_servidor; ?>/public/tools/alertify/alertify.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+    <script>
+        function onSignIn(googleUser) {
+            var profile = googleUser.getBasicProfile();
+            console.log("ID: " + profile.getId());
+            console.log("Name: " + profile.getName());
+            console.log("Email: " + profile.getEmail());
+
+            // Aquí puedes enviar el token al backend si lo necesitas
+            var id_token = googleUser.getAuthResponse().id_token;
+            console.log("ID Token: " + id_token);
+        }
+    </script>
+
 </body>
 
 </html>

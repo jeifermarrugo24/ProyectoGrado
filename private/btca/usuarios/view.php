@@ -52,6 +52,11 @@ class ViewUsuarios
                                                         </div>
 
                                                         <div class="col-lg-12 col-12 mb-3 px-2">
+                                                            <label for="correo" class="label-input">Correo Electronico: </label>
+                                                            <input type="email" placeholder="Ingrese Correo" name="correo_electronico" id="correo_electronico"/>
+                                                        </div>
+
+                                                        <div class="col-lg-12 col-12 mb-3 px-2">
                                                             <label for="password" class="label-input">Contrase&ntilde;a: </label>
                                                             <input type="password" placeholder="Ingrese Contrase&ntilde;a" id="password" name="password" />
                                                             <div style="margin-top:15px;">
@@ -230,6 +235,7 @@ class ViewUsuarios
         $usuario_ingreso = $usuario['usuario'];
         $nombre = $usuario['nombre'];
         $perfil = $usuario['perfil'];
+        $correo = $usuario['correo'];
         $img_perfil = $usuario['img_perfil'];
         if ($img_perfil != 'https://static.vecteezy.com/system/resources/previews/011/186/876/non_2x/male-profile-picture-symbol-vector.jpg') {
             $img_perfil = 'private/../../public/tools/images/images_perfiles/' . $img_perfil;
@@ -285,6 +291,11 @@ class ViewUsuarios
                                                     <div class="col-lg-12 col-12 mb-3 px-2">
                                                         <label for="usuario" class="label-input">Usuario Ingreso: </label>
                                                         <input type="text" placeholder="Ingrese Usuario" name="usuario" id="usuario" value="$usuario_ingreso"/>
+                                                    </div>
+
+                                                    <div class="col-lg-12 col-12 mb-3 px-2">
+                                                        <label for="correo" class="label-input">Correo Electronico: </label>
+                                                        <input type="email" placeholder="Ingrese Correo" name="correo_electronico" id="correo_electronico" value="$correo"/>
                                                     </div>
 
                                                     <div class="col-lg-6 col-12 mb-3 px-2">

@@ -14,6 +14,7 @@ include_once __DIR__ . "/../btca/autores/view.php";
 include_once __DIR__ . "/../btca/categorias/view.php";
 include_once __DIR__ . "/../btca/libros/view.php";
 include_once __DIR__ . "/../btca/prestamos/view.php";
+include_once __DIR__ . "/../btca/mail/view.php";
 
 function getContenido($params)
 {
